@@ -43,6 +43,7 @@ class _MyAppState extends State<MyApp> {
         foregroundColor: Colors.black,
       ),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        elevation: 20,
         type: BottomNavigationBarType.fixed,
         backgroundColor: Colors.deepOrange,
 
@@ -61,6 +62,7 @@ class _MyAppState extends State<MyApp> {
         foregroundColor: Colors.deepOrange,
       ),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        elevation: 20,
         type: BottomNavigationBarType.fixed,
         backgroundColor: Colors.black,
 

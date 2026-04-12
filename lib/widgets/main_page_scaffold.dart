@@ -1,5 +1,5 @@
 import 'package:car_api_final_app/pages/news_list_page.dart';
-import 'package:car_api_final_app/services/http_service.dart';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -58,6 +58,7 @@ class _MainScaffoldState extends State<MainScaffold> {
           Container(color: Colors.yellow),
           Container(color: Colors.green),
           NewsListPage(),
+          Container(color: Colors.pink),
         ],
       ),
 
@@ -81,6 +82,7 @@ class _MainScaffoldState extends State<MainScaffold> {
             icon: Icon(Icons.car_rental),
           ),
           BottomNavigationBarItem(label: "News", icon: Icon(Icons.newspaper)),
+          BottomNavigationBarItem(label: "Foro", icon: Icon(Icons.book)),
         ],
       ),
     );

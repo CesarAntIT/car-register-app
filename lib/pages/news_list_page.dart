@@ -23,6 +23,7 @@ class _NewsListPageState extends State<NewsListPage> {
 
   Future getNewsList() async {
     final apiNewsList = await HttpService.getNoticia();
+    if (!mounted) return;
     setState(() {
       _newsList = apiNewsList;
     });

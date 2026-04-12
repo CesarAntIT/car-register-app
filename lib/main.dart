@@ -1,3 +1,4 @@
+import 'package:car_api_final_app/widgets/main_page_scaffold.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -15,23 +16,8 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text.rich(
-            TextSpan(
-              text: "AUTOZONE",
-              style: TextStyle(fontSize: 20),
-              children: [
-                TextSpan(
-                  text: "Itla Vehicle Management",
-                  style: TextStyle(fontSize: 10),
-                ),
-              ],
-            ),
-          ),
-        ),
-        body: Placeholder(),
-      ),
+      initialRoute: '/',
+      routes: {'/': (context) => MainScaffold()},
     );
   }
 }

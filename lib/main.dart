@@ -1,3 +1,4 @@
+import 'package:car_api_final_app/services/dotenv_service.dart';
 import 'package:car_api_final_app/widgets/main_page_scaffold.dart';
 import 'package:flutter/material.dart';
 
@@ -13,6 +14,11 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -45,6 +51,7 @@ class _MyAppState extends State<MyApp> {
       ),
     );
   }
+
   ThemeData darkThemeData() {
     return ThemeData(
       splashColor: Colors.deepOrange[200],

@@ -64,7 +64,7 @@ class _MainScaffoldState extends State<MainScaffold> {
         onTap: (index) {
           _pageController.animateToPage(
             index,
-            duration: Duration(milliseconds: 150),
+            duration: Duration(milliseconds: 100),
             curve: Curves.easeIn,
           );
         },

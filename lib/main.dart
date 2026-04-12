@@ -16,8 +16,50 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: lightThemeData(),
+      darkTheme: darkThemeData(),
+
       initialRoute: '/',
-      routes: {'/': (context) => MainScaffold()},
+      routes: {
+        //TODO: Add the Login, My Vehicles and Profile Pages to Router
+        '/': (context) => MainScaffold(),
+      },
+    );
+  }
+
+  //TODO: Determine a defenitive ColorScheme
+  ThemeData lightThemeData() {
+    return ThemeData(
+      splashColor: Colors.deepOrange[200],
+      splashFactory: InkRipple.splashFactory,
+      appBarTheme: AppBarTheme(
+        backgroundColor: Colors.deepOrange,
+        foregroundColor: Colors.black,
+      ),
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: Colors.deepOrange,
+
+        selectedItemColor: Colors.black,
+        unselectedItemColor: Colors.white,
+      ),
+    );
+  }
+  ThemeData darkThemeData() {
+    return ThemeData(
+      splashColor: Colors.deepOrange[200],
+      splashFactory: InkRipple.splashFactory,
+      appBarTheme: AppBarTheme(
+        backgroundColor: Colors.black,
+        foregroundColor: Colors.deepOrange,
+      ),
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: Colors.black,
+
+        selectedItemColor: Colors.deepOrange,
+        unselectedItemColor: Colors.white,
+      ),
     );
   }
 }

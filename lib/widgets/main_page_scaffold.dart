@@ -11,11 +11,18 @@ class MainScaffold extends StatefulWidget {
 class _MainScaffoldState extends State<MainScaffold> {
   //Valor de la Página Actual del Scaffold
   var _currentPage = 0;
+  final _pageController = PageController();
 
   void _changePage(int index) {
     setState(() {
       _currentPage = index;
     });
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
   }
 
   @override
@@ -31,20 +38,36 @@ class _MainScaffoldState extends State<MainScaffold> {
             ),
             children: [
               TextSpan(
-                text: "\nItla Vehicle Management",
+                text: "\nItla Vehicle Management\n",
                 style: TextStyle(fontSize: 10),
               ),
             ],
           ),
         ),
+        actions: [
+          IconButton(onPressed: () {}, icon: Icon(Icons.account_circle)),
+        ],
       ),
-      body: Placeholder(),
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: _changePage,
+        children: [
+          Container(color: Colors.red),
+          Container(color: Colors.yellow),
+          Container(color: Colors.green),
+          Container(color: Colors.pink),
+        ],
+      ),
 
       bottomNavigationBar: BottomNavigationBar(
-        unselectedItemColor: Colors.grey,
-        selectedItemColor: Colors.black,
         currentIndex: _currentPage,
-        onTap: _changePage,
+        onTap: (index) {
+          _pageController.animateToPage(
+            index,
+            duration: Duration(milliseconds: 150),
+            curve: Curves.easeIn,
+          );
+        },
         items: [
           BottomNavigationBarItem(label: "Inicio", icon: Icon(Icons.home)),
           BottomNavigationBarItem(

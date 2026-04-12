@@ -3,9 +3,11 @@ import 'package:car_api_final_app/services/http_service.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_html_iframe/flutter_html_iframe.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class NewsPageDetail extends StatefulWidget {
   const NewsPageDetail({super.key, required this.newsId, required this.title});
@@ -68,7 +70,7 @@ class NewsDetailContent extends StatelessWidget {
         children: <Widget>[
           Text(
             news.titulo,
-            style: GoogleFonts.inter(fontWeight: FontWeight(700), fontSize: 24),
+            style: GoogleFonts.inter(fontWeight: FontWeight(800), fontSize: 24),
           ),
           Text(DateFormat('dd/MM/yyyy').format(news.fecha)),
           Text.rich(
@@ -87,16 +89,15 @@ class NewsDetailContent extends StatelessWidget {
               text: "Ver en remolacha.net",
             ),
           ),
+          Divider(),
           Padding(
             padding: const EdgeInsets.all(5),
             child: Html(
-              data: news.contenido,
-              extensions: [
-                
-              ],
+              data: news.contenido!.replaceAll(RegExp(r'sandbox="[^"]*"'), ''),
+              extensions: [IframeHtmlExtension()],
               style: {
                 'body': Style(
-                  fontSize: FontSize(18),
+                  fontSize: FontSize(16),
                   lineHeight: LineHeight(1.5),
                   textAlign: TextAlign.justify,
                 ),
@@ -107,9 +108,19 @@ class NewsDetailContent extends StatelessWidget {
                 ),
                 'img': Style(
                   display: Display.block,
-                  width: Width(300),
+                  width: Width(345),
                   height: Height(200),
-                  margin: Margins.only(right: 20),
+                  margin: Margins.only(right: 20, bottom: 20),
+                ),
+                '.jetpack-video-wrapper': Style(
+                  margin: Margins.only(top: 5, bottom: 5),
+                  display: Display.block,
+                ),
+                'iframe': Style(
+                  width: Width(300),
+                  height: Height(350),
+                  margin: Margins.all(5),
+                  padding: HtmlPaddings.all(5),
                 ),
               },
               onLinkTap: (url, _, _) async {

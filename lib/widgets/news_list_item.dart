@@ -1,4 +1,5 @@
 import 'package:car_api_final_app/models/noticia_model.dart';
+import 'package:car_api_final_app/pages/news_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -11,7 +12,15 @@ class NewsListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                NewsPageDetail(newsId: news.id, title: news.titulo),
+          ),
+        );
+      },
       child: Container(
         margin: EdgeInsets.all(5),
         padding: EdgeInsets.all(10),

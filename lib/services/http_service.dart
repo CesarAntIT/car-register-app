@@ -1,5 +1,3 @@
-
-
 import 'package:car_api_final_app/models/noticia_model.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -16,7 +14,7 @@ class HttpService {
   }
 
   //Consigue la lista de noticias actuales
-  static Future<List<Noticia>> getNoticia() async {
+  static Future<List<Noticia>> getListaNoticias() async {
     final token = await getToken();
 
     try {
@@ -41,5 +39,29 @@ class HttpService {
       print("Dio Error: ${e.message}");
     }
     return [];
+  }
+
+  static Future<Noticia?> getNoticia(int id) async {
+    final token = await getToken();
+    try {
+      final res = await _dio.get(
+        '/noticias/detalle',
+        queryParameters: {'id': '$id'},
+        options: Options(
+          headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer $token',
+          },
+        ),
+      );
+
+      if (res.data['success'] == true) {
+        final dynamic resData = res.data['data'];
+        return Noticia.fromMap(resData as Map<String, dynamic>);
+      }
+    } on DioException catch (e) {
+      print("Dio Error: ${e.message}");
+    }
+    return null;
   }
 }

@@ -9,6 +9,7 @@ class Noticia {
   DateTime fecha;
   String fuente;
   String link;
+  String? contenido;
 
   Noticia({
     required this.id,
@@ -18,6 +19,7 @@ class Noticia {
     required this.fecha,
     required this.fuente,
     required this.link,
+    this.contenido = "",
   });
 
   Map<String, dynamic> toMap() {
@@ -26,9 +28,10 @@ class Noticia {
       'titulo': titulo,
       'resumen': resumen,
       'imagenUrl': imagenUrl,
-      'fecha': fecha.millisecondsSinceEpoch,
+      'fecha': fecha.toUtc(),
       'fuente': fuente,
       'link': link,
+      'contenido': contenido,
     };
   }
 
@@ -41,6 +44,7 @@ class Noticia {
       fecha: DateTime.parse(map['fecha'] as String),
       fuente: map['fuente'] as String,
       link: map['link'] as String,
+      contenido: map['contenido'] != null ? map['contenido'] as String : null,
     );
   }
 

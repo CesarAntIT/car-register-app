@@ -1,3 +1,4 @@
+import 'package:car_api_final_app/pages/care_videos_page.dart';
 import 'package:car_api_final_app/pages/news_list_page.dart';
 
 import 'package:flutter/material.dart';
@@ -55,7 +56,7 @@ class _MainScaffoldState extends State<MainScaffold> {
         onPageChanged: _changePage,
         children: [
           Container(color: Colors.red),
-          Container(color: Colors.yellow),
+          CareVideoPage(),
           Container(color: Colors.green),
           NewsListPage(),
           Container(color: Colors.pink),

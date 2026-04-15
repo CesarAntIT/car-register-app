@@ -30,33 +30,71 @@ class _CareVideoPageState extends State<CareVideoPage> {
           "  Videos Educativos",
           style: GoogleFonts.sairaStencilOne(fontSize: 30),
         ),
-        Padding(
-          padding: const EdgeInsets.only(left: 25.0),
-          child: Row(
+        Divider(),
+        Text(
+          "      Categorías:",
+          style: GoogleFonts.saira(fontWeight: FontWeight.bold),
+        ),
+        Container(
+          color: Colors.transparent,
+          height: 40,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+
+            padding: EdgeInsets.all(5),
             children: [
-              Text("Mostrando: "),
-              DropdownButton(
-                onChanged: (String? value) {
-                  setState(() {
-                    _filter = value;
-                  });
-                },
-                value: _filter,
-                items: _filterOptions.map<DropdownMenuItem<String>>((
-                  String? value,
-                ) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 20),
-                      child: Text(
-                        value ?? "",
-                        style: GoogleFonts.interTight(color: Colors.black),
-                      ),
-                    ),
-                  );
-                }).toList(),
+              ElevatedButton(
+                onPressed: () => setState(() {
+                  _filter = _filterOptions.first;
+                }),
+                child: Text("Todas"),
               ),
+              ElevatedButton(
+                onPressed: () => setState(() {
+                  _filter = _filterOptions[1];
+                }),
+                child: Text("Mantenimiento"),
+              ),
+              ElevatedButton(
+                onPressed: () => setState(() {
+                  _filter = _filterOptions[2];
+                }),
+                child: Text("Mantenimiento General"),
+              ),
+              ElevatedButton(
+                onPressed: () => setState(() {
+                  _filter = _filterOptions[3];
+                }),
+                child: Text("Recomendaciones"),
+              ),
+              ElevatedButton(
+                onPressed: () => setState(() {
+                  _filter = _filterOptions.last;
+                }),
+                child: Text("Misc."),
+              ),
+              // DropdownButton(
+              //   onChanged: (String? value) {
+              //     setState(() {
+              //       _filter = value;
+              //     });
+              //   },
+              //   value: _filter,
+              //   items: _filterOptions.map<DropdownMenuItem<String>>((
+              //     String? value,
+              //   ) {
+              //     return DropdownMenuItem<String>(
+              //       value: value,
+              //       child: Padding(
+              //         padding: const EdgeInsets.only(left: 20),
+              //         child: Text(
+              //           value ?? "",
+              //           style: GoogleFonts.interTight(color: Colors.black),
+              //         ),
+              //       ),
+              //     );
+              //   }).toList(),
+              // ),
             ],
           ),
         ),

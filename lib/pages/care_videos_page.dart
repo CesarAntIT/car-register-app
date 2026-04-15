@@ -68,14 +68,38 @@ class _CareVideoPageState extends State<CareVideoPage> {
             }
 
             if (res.hasData) {
-              final List<CareVideo>? data = res.data;
+              List<CareVideo>? data = res.data;
 
               if (data != null && data.isNotEmpty) {
+                if (_filter != "todo") {
+                  if (_filter == "misc.") {
+                    data = data
+                        .where(
+                          (x) => !_filterOptions.contains(
+                            x.categoria.toLowerCase(),
+                          ),
+                        )
+                        .toList();
+                  } else {
+                    data = data
+                        .where((x) => x.categoria.toLowerCase() == _filter)
+                        .toList();
+                  }
+                }
+
+                if (data.isEmpty) {
+                  return Expanded(
+                    child: Center(
+                      child: Text("No hay Vídeos educativos de esta Categoría"),
+                    ),
+                  );
+                }
+
                 return Expanded(
                   child: ListView.builder(
                     itemCount: data.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return VideoListItem(video: data[index]);
+                      return VideoListItem(video: data![index]);
                     },
                   ),
                 );

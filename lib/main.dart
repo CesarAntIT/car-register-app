@@ -1,7 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:car_api_final_app/services/dotenv_service.dart';
 import 'package:car_api_final_app/widgets/main_page_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'pages/catalogo_vehiculos_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -24,18 +26,19 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'Autozone ITLA',
       theme: lightThemeData(),
       darkTheme: darkThemeData(),
 
       initialRoute: '/',
       routes: {
-        //TODO: Add the Login, My Vehicles and Profile Pages to Router
-        '/': (context) => MainScaffold(),
+        '/': (context) => const MainScaffold(),
+        '/vehiculos': (context) => const CatalogoVehiculosScreen(),
       },
     );
   }
 
-  //TODO: Determine a defenitive ColorScheme
+  // TODO: Determine a definitive ColorScheme
   ThemeData lightThemeData() {
     return ThemeData(
       splashColor: Colors.deepOrange[200],
@@ -43,15 +46,14 @@ class _MyAppState extends State<MyApp> {
         style: ElevatedButton.styleFrom(backgroundColor: Colors.deepOrange),
       ),
       splashFactory: InkRipple.splashFactory,
-      appBarTheme: AppBarTheme(
+      appBarTheme: const AppBarTheme(
         backgroundColor: Colors.deepOrange,
         foregroundColor: Colors.white,
       ),
-      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         elevation: 20,
         type: BottomNavigationBarType.fixed,
         backgroundColor: Colors.deepOrange,
-
         selectedItemColor: Colors.black,
         unselectedItemColor: Colors.white,
       ),
@@ -82,13 +84,11 @@ class _MyAppState extends State<MyApp> {
       ),
       splashColor: Colors.deepOrange[200],
       splashFactory: InkRipple.splashFactory,
-
-      appBarTheme: AppBarTheme(
+      appBarTheme: const AppBarTheme(
         backgroundColor: Colors.black,
         foregroundColor: Colors.deepOrange,
       ),
-
-      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         elevation: 20,
         type: BottomNavigationBarType.fixed,
         backgroundColor: Colors.black,

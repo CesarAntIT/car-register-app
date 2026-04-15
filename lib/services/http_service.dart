@@ -1,5 +1,7 @@
+import 'package:car_api_final_app/models/care_video_model.dart';
 import 'package:car_api_final_app/models/noticia_model.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HttpService {
@@ -36,7 +38,7 @@ class HttpService {
             .toList();
       }
     } on DioException catch (e) {
-      print("Dio Error: ${e.message}");
+      debugPrint("Dio Error: ${e.message}");
     }
     return [];
   }
@@ -60,8 +62,33 @@ class HttpService {
         return Noticia.fromMap(resData as Map<String, dynamic>);
       }
     } on DioException catch (e) {
-      print("Dio Error: ${e.message}");
+      debugPrint("Dio Error: ${e.message}");
     }
     return null;
+  }
+
+  static Future<List<CareVideo>> getVideos() async {
+    final token = await getToken();
+    try {
+      final res = await _dio.get(
+        '/videos',
+        options: Options(
+          headers: {
+            'Acccept': 'application/json',
+            'Authorization': 'Bearer $token',
+          },
+        ),
+      );
+
+      if (res.data['success'] == true) {
+        final List<dynamic> data = res.data['data'];
+        return data
+            .map((item) => CareVideo.fromMap(item as Map<String, dynamic>))
+            .toList();
+      }
+    } on DioException catch (e) {
+      debugPrint(e.error.toString());
+    }
+    return [];
   }
 }

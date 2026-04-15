@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:car_api_final_app/services/dotenv_service.dart';
 import 'package:car_api_final_app/widgets/main_page_scaffold.dart';
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'pages/catalogo_vehiculos_screen.dart';
 
 void main() {
@@ -40,10 +42,13 @@ class _MyAppState extends State<MyApp> {
   ThemeData lightThemeData() {
     return ThemeData(
       splashColor: Colors.deepOrange[200],
+      iconButtonTheme: IconButtonThemeData(
+        style: ElevatedButton.styleFrom(backgroundColor: Colors.deepOrange),
+      ),
       splashFactory: InkRipple.splashFactory,
       appBarTheme: const AppBarTheme(
         backgroundColor: Colors.deepOrange,
-        foregroundColor: Colors.black,
+        foregroundColor: Colors.white,
       ),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         elevation: 20,
@@ -57,6 +62,26 @@ class _MyAppState extends State<MyApp> {
 
   ThemeData darkThemeData() {
     return ThemeData(
+      iconButtonTheme: IconButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.black,
+          foregroundColor: Colors.deepOrange,
+        ),
+      ),
+
+      textTheme: TextTheme(
+        titleMedium: GoogleFonts.inter(
+          color: Colors.white,
+          fontWeight: FontWeight(500),
+        ),
+        bodySmall: GoogleFonts.interTight(color: Colors.white),
+      ),
+
+      cardTheme: CardThemeData(
+        color: Colors.black,
+        shadowColor: Colors.deepOrangeAccent,
+        elevation: 4,
+      ),
       splashColor: Colors.deepOrange[200],
       splashFactory: InkRipple.splashFactory,
       appBarTheme: const AppBarTheme(

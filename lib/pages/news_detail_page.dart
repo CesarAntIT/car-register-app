@@ -7,7 +7,6 @@ import 'package:flutter_html_iframe/flutter_html_iframe.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 class NewsPageDetail extends StatefulWidget {
   const NewsPageDetail({super.key, required this.newsId, required this.title});

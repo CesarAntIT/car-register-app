@@ -1,5 +1,5 @@
 import 'package:car_api_final_app/pages/news_list_page.dart';
-
+import 'package:car_api_final_app/pages/catalogo_vehiculos_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -11,7 +11,6 @@ class MainScaffold extends StatefulWidget {
 }
 
 class _MainScaffoldState extends State<MainScaffold> {
-  //Valor de la Página Actual del Scaffold
   var _currentPage = 0;
   final _pageController = PageController();
 
@@ -38,7 +37,7 @@ class _MainScaffoldState extends State<MainScaffold> {
               fontSize: 30,
               fontStyle: FontStyle.italic,
             ),
-            children: [
+            children: const [
               TextSpan(
                 text: "\nItla Vehicle Management\n",
                 style: TextStyle(fontSize: 10),
@@ -47,7 +46,7 @@ class _MainScaffoldState extends State<MainScaffold> {
           ),
         ),
         actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.account_circle)),
+          IconButton(onPressed: () {}, icon: const Icon(Icons.account_circle)),
         ],
       ),
       body: PageView(
@@ -56,22 +55,21 @@ class _MainScaffoldState extends State<MainScaffold> {
         children: [
           Container(color: Colors.red),
           Container(color: Colors.yellow),
-          Container(color: Colors.green),
-          NewsListPage(),
+          const CatalogoVehiculosScreen(),
+          const NewsListPage(),
           Container(color: Colors.pink),
         ],
       ),
-
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentPage,
         onTap: (index) {
           _pageController.animateToPage(
             index,
-            duration: Duration(milliseconds: 100),
+            duration: const Duration(milliseconds: 100),
             curve: Curves.easeIn,
           );
         },
-        items: [
+        items: const [
           BottomNavigationBarItem(label: "Inicio", icon: Icon(Icons.home)),
           BottomNavigationBarItem(
             label: "Videos",

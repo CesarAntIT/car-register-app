@@ -1,5 +1,6 @@
 import 'package:car_api_final_app/pages/news_list_page.dart';
-
+import 'package:car_api_final_app/pages/foro_lista_page.dart';
+import 'package:car_api_final_app/pages/combustible_list_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -11,7 +12,6 @@ class MainScaffold extends StatefulWidget {
 }
 
 class _MainScaffoldState extends State<MainScaffold> {
-  //Valor de la Página Actual del Scaffold
   var _currentPage = 0;
   final _pageController = PageController();
 
@@ -56,12 +56,11 @@ class _MainScaffoldState extends State<MainScaffold> {
         children: [
           Container(color: Colors.red),
           Container(color: Colors.yellow),
-          Container(color: Colors.green),
+          CombustibleListPage(vehiculoId: 24),
           NewsListPage(),
-          Container(color: Colors.pink),
+          ForoListaPage(),
         ],
       ),
-
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentPage,
         onTap: (index) {

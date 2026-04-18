@@ -7,7 +7,6 @@ import 'package:car_api_final_app/pages/foro_crear_tema_page.dart';
 import 'package:car_api_final_app/pages/foro_lista_page.dart';
 import 'package:car_api_final_app/pages/foro_detalle_page.dart';
 import 'package:car_api_final_app/pages/foro_mis_temas_page.dart';
-import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'pages/catalogo_vehiculos_screen.dart';
 

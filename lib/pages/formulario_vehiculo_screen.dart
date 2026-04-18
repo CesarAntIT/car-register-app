@@ -263,6 +263,30 @@ class _FormularioVehiculoScreenState extends State<FormularioVehiculoScreen> {
                 },
               ),
               const SizedBox(height: 20),
+              if (widget.vehiculo != null)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  spacing: 10,
+                  children: <Widget>[
+                    ElevatedButton(
+                      onPressed: () {},
+                      child: Text("Combustibles"),
+                    ),
+                    ElevatedButton(
+                      onPressed: () async {
+                        await Navigator.pushNamed(
+                          context,
+                          '/foro/crear',
+                          arguments: widget
+                              .vehiculo!
+                              .id, // vehiculoId — cuando haya login, pasar el real
+                        );
+                      },
+                      child: Text("Crear Tema"),
+                    ),
+                  ],
+                ),
+              const SizedBox(height: 30),
               ElevatedButton(
                 onPressed: _isLoading ? null : _guardarVehiculo,
                 child: _isLoading

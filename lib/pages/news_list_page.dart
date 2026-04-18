@@ -40,7 +40,7 @@ class _NewsListPageState extends State<NewsListPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "Noticias Automotrices",
+          "  Noticias Automotrices",
           style: GoogleFonts.sairaStencilOne(fontSize: 30),
         ),
         _newsList.isNotEmpty

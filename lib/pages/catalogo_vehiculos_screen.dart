@@ -1,5 +1,7 @@
 import 'package:car_api_final_app/models/vehiculo_model.dart';
+import 'package:car_api_final_app/widgets/vehicle_list_item.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../services/vehiculo_service.dart';
 import 'formulario_vehiculo_screen.dart';
 
@@ -27,7 +29,7 @@ class _CatalogoVehiculosScreenState extends State<CatalogoVehiculosScreen> {
     });
   }
 
-  Future<void> _navegarYActualizar(
+  Future<void> _navegarYAnadir(
     BuildContext context, [
     Vehiculo? vehiculo,
   ]) async {
@@ -46,79 +48,50 @@ class _CatalogoVehiculosScreenState extends State<CatalogoVehiculosScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder<List<Vehiculo>>(
-        future: _futureVehiculos,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (snapshot.hasError) {
-            return const Center(child: Text("Error al cargar datos"));
-          }
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "  Mis Vehiculos",
+            style: GoogleFonts.sairaStencilOne(fontSize: 30),
+          ),
+          Divider(),
+          FutureBuilder<List<Vehiculo>>(
+            future: _futureVehiculos,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              if (snapshot.hasError) {
+                return const Center(child: Text("Error al cargar datos"));
+              }
 
-          final vehiculos = snapshot.data ?? [];
+              final vehiculos = snapshot.data ?? [];
 
-          if (vehiculos.isEmpty) {
-            return const Center(child: Text("No hay vehículos registrados"));
-          }
+              if (vehiculos.isEmpty) {
+                return const Center(
+                  child: Text("No hay vehículos registrados"),
+                );
+              }
 
-          return ListView.builder(
-            padding: const EdgeInsets.all(8.0),
-            itemCount: vehiculos.length,
-            itemBuilder: (context, index) {
-              final v = vehiculos[index];
-              return Card(
-                elevation: 2,
-                margin: const EdgeInsets.symmetric(vertical: 6),
-                child: ListTile(
-                  contentPadding: const EdgeInsets.all(8.0),
-                  leading: ClipRRect(
-                    borderRadius: BorderRadius.circular(8.0),
-                    child: (v.fotoUrl != null && v.fotoUrl!.isNotEmpty)
-                        ? Image.network(
-                            v.fotoUrl!,
-                            width: 60,
-                            height: 60,
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) =>
-                                Container(
-                                  width: 60,
-                                  height: 60,
-                                  color: Colors.grey[300],
-                                  child: const Icon(
-                                    Icons.directions_car,
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                          )
-                        : Container(
-                            width: 60,
-                            height: 60,
-                            color: Colors.grey[300],
-                            child: const Icon(
-                              Icons.directions_car,
-                              color: Colors.grey,
-                            ),
-                          ),
-                  ),
-                  title: Text(
-                    "${v.marca} ${v.modelo} (${v.anio})",
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  subtitle: Text("Placa: ${v.placa}\nChasis: ${v.chasis}"),
-                  isThreeLine: true,
-                  trailing: const Icon(Icons.edit, color: Colors.deepOrange),
-                  onTap: () => _navegarYActualizar(context, v),
+              return Expanded(
+                child: ListView.builder(
+                  padding: const EdgeInsets.all(8.0),
+                  itemCount: vehiculos.length,
+                  itemBuilder: (context, index) {
+                    final v = vehiculos[index];
+                    return VehicleListItem(v: v);
+                  },
                 ),
               );
             },
-          );
-        },
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.deepOrange,
         child: const Icon(Icons.add, color: Colors.white),
-        onPressed: () => _navegarYActualizar(context),
+        onPressed: () => _navegarYAnadir(context),
       ),
     );
   }

@@ -28,7 +28,7 @@ class _CareVideoPageState extends State<CareVideoPage> {
       children: [
         Text(
           "  Videos Educativos",
-          style: GoogleFonts.sairaStencilOne(fontSize: 30),
+          style: Theme.of(context).appBarTheme.titleTextStyle,
         ),
         Divider(),
         Text(
@@ -73,28 +73,6 @@ class _CareVideoPageState extends State<CareVideoPage> {
                 }),
                 child: Text("Misc."),
               ),
-              // DropdownButton(
-              //   onChanged: (String? value) {
-              //     setState(() {
-              //       _filter = value;
-              //     });
-              //   },
-              //   value: _filter,
-              //   items: _filterOptions.map<DropdownMenuItem<String>>((
-              //     String? value,
-              //   ) {
-              //     return DropdownMenuItem<String>(
-              //       value: value,
-              //       child: Padding(
-              //         padding: const EdgeInsets.only(left: 20),
-              //         child: Text(
-              //           value ?? "",
-              //           style: GoogleFonts.interTight(color: Colors.black),
-              //         ),
-              //       ),
-              //     );
-              //   }).toList(),
-              // ),
             ],
           ),
         ),

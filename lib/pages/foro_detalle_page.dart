@@ -112,17 +112,24 @@ class _ForoDetallePageState extends State<ForoDetallePage> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    _tema!['titulo'] ?? '',
-                                    style: const TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
+                                  Text.rich(
+                                    TextSpan(
+                                      text: _tema!['titulo'] ?? '',
+                                      style: const TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
+                                    style: Theme.of(
+                                      context,
+                                    ).textTheme.titleMedium,
                                   ),
                                   const SizedBox(height: 8),
                                   Text(
                                     _tema!['descripcion'] ?? '',
-                                    style: const TextStyle(fontSize: 15),
+                                    style: Theme.of(
+                                      context,
+                                    ).textTheme.displayMedium,
                                   ),
                                   const SizedBox(height: 8),
                                   Row(

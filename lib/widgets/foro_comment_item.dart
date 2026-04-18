@@ -21,7 +21,10 @@ class ForoCommentItem extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 4),
-            Text(r['contenido'] ?? ''),
+            Text(
+              r['contenido'] ?? '',
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
             const SizedBox(height: 4),
             Text(
               r['fecha'] ?? '',

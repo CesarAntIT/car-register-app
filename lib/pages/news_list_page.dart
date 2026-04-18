@@ -41,8 +41,9 @@ class _NewsListPageState extends State<NewsListPage> {
       children: [
         Text(
           "  Noticias Automotrices",
-          style: GoogleFonts.sairaStencilOne(fontSize: 30),
+          style: Theme.of(context).appBarTheme.titleTextStyle,
         ),
+        Divider(),
         _newsList.isNotEmpty
             ? Expanded(
                 child: RefreshIndicator(

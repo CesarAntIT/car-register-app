@@ -1,6 +1,7 @@
 import 'package:car_api_final_app/services/http_service.dart';
 import 'package:car_api_final_app/widgets/foro_list_item.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ForoListaPage extends StatefulWidget {
   const ForoListaPage({super.key});
@@ -38,7 +39,8 @@ class _ForoListaPageState extends State<ForoListaPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Foro Comunitario"),
+        title: Text("Foro Comunitario", style: TextStyle(color: Colors.black)),
+        backgroundColor: Colors.transparent,
         actions: [
           IconButton(
             icon: const Icon(Icons.bookmarks),

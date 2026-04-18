@@ -53,7 +53,7 @@ class _CatalogoVehiculosScreenState extends State<CatalogoVehiculosScreen> {
         children: [
           Text(
             "  Mis Vehiculos",
-            style: GoogleFonts.sairaStencilOne(fontSize: 30),
+            style: Theme.of(context).appBarTheme.titleTextStyle,
           ),
           Divider(),
           FutureBuilder<List<Vehiculo>>(

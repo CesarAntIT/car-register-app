@@ -7,6 +7,7 @@ import 'package:car_api_final_app/pages/foro_crear_tema_page.dart';
 import 'package:car_api_final_app/pages/foro_lista_page.dart';
 import 'package:car_api_final_app/pages/foro_detalle_page.dart';
 import 'package:car_api_final_app/pages/foro_mis_temas_page.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'pages/catalogo_vehiculos_screen.dart';
 
@@ -47,7 +48,7 @@ class _MyAppState extends State<MyApp> {
           return CombustibleRegistroPage(vehiculoId: vehiculoId);
         },
 
-          '/foro/crear': (context) {
+        '/foro/crear': (context) {
           final vehiculoId = ModalRoute.of(context)!.settings.arguments as int;
           return ForoCrearTemaPage(vehiculoId: vehiculoId);
         },
@@ -71,10 +72,12 @@ class _MyAppState extends State<MyApp> {
         style: ElevatedButton.styleFrom(backgroundColor: Colors.deepOrange),
       ),
       splashFactory: InkRipple.splashFactory,
-      appBarTheme: const AppBarTheme(
+      appBarTheme: AppBarTheme(
         backgroundColor: Colors.deepOrange,
         foregroundColor: Colors.white,
+        titleTextStyle: GoogleFonts.sairaStencilOne(fontSize: 26),
       ),
+      textTheme: TextTheme(displayMedium: GoogleFonts.interTight(fontSize: 14)),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         elevation: 20,
         type: BottomNavigationBarType.fixed,
@@ -99,6 +102,10 @@ class _MyAppState extends State<MyApp> {
           color: Colors.white,
           fontWeight: FontWeight(500),
         ),
+        displayMedium: GoogleFonts.interTight(
+          color: Colors.white,
+          fontSize: 14,
+        ),
         bodySmall: GoogleFonts.interTight(color: Colors.white),
       ),
 
@@ -109,9 +116,10 @@ class _MyAppState extends State<MyApp> {
       ),
       splashColor: Colors.deepOrange[200],
       splashFactory: InkRipple.splashFactory,
-      appBarTheme: const AppBarTheme(
+      appBarTheme: AppBarTheme(
         backgroundColor: Colors.black,
         foregroundColor: Colors.deepOrange,
+        titleTextStyle: GoogleFonts.sairaStencilOne(fontSize: 26),
       ),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         elevation: 20,

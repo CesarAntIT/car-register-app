@@ -1,6 +1,7 @@
 import 'package:car_api_final_app/services/http_service.dart';
 import 'package:car_api_final_app/widgets/my_temas_item.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ForoMisTemasPage extends StatefulWidget {
   const ForoMisTemasPage({super.key});
@@ -37,7 +38,12 @@ class _ForoMisTemasPageState extends State<ForoMisTemasPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Mis Temas")),
+      appBar: AppBar(
+        title: Text(
+          "Mis Temas",
+          style: GoogleFonts.sairaStencilOne(fontSize: 24),
+        ),
+      ),
       body: _loading
           ? const Center(child: CircularProgressIndicator())
           : _temas.isEmpty

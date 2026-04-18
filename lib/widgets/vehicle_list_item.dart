@@ -50,9 +50,12 @@ class VehicleListItem extends StatelessWidget {
         ),
         title: Text(
           "${v.marca} ${v.modelo} (${v.anio})",
-          style: const TextStyle(fontWeight: FontWeight.bold),
+          style: Theme.of(context).textTheme.titleMedium,
         ),
-        subtitle: Text("Placa: ${v.placa}\nChasis: ${v.chasis}"),
+        subtitle: Text(
+          "Placa: ${v.placa}\nChasis: ${v.chasis}",
+          style: Theme.of(context).textTheme.bodySmall,
+        ),
         isThreeLine: true,
         trailing: const Icon(Icons.edit, color: Colors.deepOrange),
         onTap: () => _navegarYActualizar(context, v),

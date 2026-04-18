@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ForoListItem extends StatelessWidget {
-  const ForoListItem({
-    super.key,
-    required this.t,
-  });
+  const ForoListItem({super.key, required this.t});
 
   final dynamic t;
 
@@ -20,12 +17,15 @@ class ForoListItem extends StatelessWidget {
         ),
         title: Text(
           t['titulo'] ?? '',
-          style: const TextStyle(fontWeight: FontWeight.bold),
+          style: Theme.of(context).textTheme.titleMedium,
         ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(t['autor'] ?? ''),
+            Text(
+              t['autor'] ?? '',
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
             Text(
               t['vehiculo'] ?? '',
               style: const TextStyle(color: Colors.deepOrange),
@@ -39,11 +39,8 @@ class ForoListItem extends StatelessWidget {
             Text('${t['totalRespuestas'] ?? 0}'),
           ],
         ),
-        onTap: () => Navigator.pushNamed(
-          context,
-          '/foro/detalle',
-          arguments: t['id'],
-        ),
+        onTap: () =>
+            Navigator.pushNamed(context, '/foro/detalle', arguments: t['id']),
       ),
     );
   }

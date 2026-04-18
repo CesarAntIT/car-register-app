@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:car_api_final_app/services/dotenv_service.dart';
 import 'package:car_api_final_app/widgets/main_page_scaffold.dart';
+import 'package:car_api_final_app/pages/combustible_list_page.dart';
+import 'package:car_api_final_app/pages/combustible_registro_page.dart';
+import 'package:car_api_final_app/pages/foro_crear_tema_page.dart';
+import 'package:car_api_final_app/pages/foro_lista_page.dart';
+import 'package:car_api_final_app/pages/foro_detalle_page.dart';
+import 'package:car_api_final_app/pages/foro_mis_temas_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'pages/catalogo_vehiculos_screen.dart';
@@ -32,7 +38,27 @@ class _MyAppState extends State<MyApp> {
 
       initialRoute: '/',
       routes: {
-        '/': (context) => const MainScaffold(),
+        '/': (context) => MainScaffold(),
+        '/combustible': (context) {
+          final vehiculoId = ModalRoute.of(context)!.settings.arguments as int;
+          return CombustibleListPage(vehiculoId: vehiculoId);
+        },
+        '/combustible/registro': (context) {
+          final vehiculoId = ModalRoute.of(context)!.settings.arguments as int;
+          return CombustibleRegistroPage(vehiculoId: vehiculoId);
+        },
+
+          '/foro/crear': (context) {
+          final vehiculoId = ModalRoute.of(context)!.settings.arguments as int;
+          return ForoCrearTemaPage(vehiculoId: vehiculoId);
+        },
+
+        '/foro': (context) => const ForoListaPage(),
+        '/foro/detalle': (context) {
+          final temaId = ModalRoute.of(context)!.settings.arguments as int;
+          return ForoDetallePage(temaId: temaId);
+        },
+        '/foro/mis-temas': (context) => const ForoMisTemasPage(),
         '/vehiculos': (context) => const CatalogoVehiculosScreen(),
       },
     );

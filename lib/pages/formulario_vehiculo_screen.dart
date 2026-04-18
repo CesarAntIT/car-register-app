@@ -268,11 +268,18 @@ class _FormularioVehiculoScreenState extends State<FormularioVehiculoScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   spacing: 10,
                   children: <Widget>[
-                    ElevatedButton(
-                      onPressed: () {},
-                      child: Text("Combustibles"),
+                    ElevatedButton.icon(
+                      onPressed: () async {
+                        await Navigator.pushNamed(
+                          context,
+                          '/combustible',
+                          arguments: widget.vehiculo!.id,
+                        );
+                      },
+                      label: Text("Combustibles"),
+                      icon: Icon(Icons.local_gas_station),
                     ),
-                    ElevatedButton(
+                    ElevatedButton.icon(
                       onPressed: () async {
                         await Navigator.pushNamed(
                           context,
@@ -282,7 +289,8 @@ class _FormularioVehiculoScreenState extends State<FormularioVehiculoScreen> {
                               .id, // vehiculoId — cuando haya login, pasar el real
                         );
                       },
-                      child: Text("Crear Tema"),
+                      label: Text("Crear Tema"),
+                      icon: Icon(Icons.book),
                     ),
                   ],
                 ),

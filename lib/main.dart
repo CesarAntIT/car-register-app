@@ -1,3 +1,4 @@
+import 'package:car_api_final_app/widgets/navi_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:car_api_final_app/services/dotenv_service.dart';
 import 'package:car_api_final_app/widgets/main_page_scaffold.dart';
@@ -37,7 +38,7 @@ class _MyAppState extends State<MyApp> {
 
       initialRoute: '/',
       routes: {
-        '/': (context) => MainScaffold(),
+        '/': (context) => MainAppNavigation(),
         '/combustible': (context) {
           final vehiculoId = ModalRoute.of(context)!.settings.arguments as int;
           return CombustibleListPage(vehiculoId: vehiculoId);
@@ -84,6 +85,26 @@ class _MyAppState extends State<MyApp> {
         selectedItemColor: Colors.black,
         unselectedItemColor: Colors.white,
       ),
+      navigationDrawerTheme: NavigationDrawerThemeData(
+        backgroundColor: Colors.white,
+        indicatorColor: Colors.deepOrange,
+        indicatorShape: Border.all(style: BorderStyle.none),
+        tileHeight: 75,
+        iconTheme: WidgetStateProperty.resolveWith((states) {
+          return IconThemeData(
+            color: states.contains(WidgetState.selected)
+                ? Colors.white
+                : Colors.black,
+          );
+        }),
+        labelTextStyle: WidgetStateProperty.resolveWith((states) {
+          return GoogleFonts.inter(
+            color: states.contains(WidgetState.selected)
+                ? Colors.white
+                : Colors.black,
+          );
+        }),
+      ),
     );
   }
 
@@ -95,7 +116,6 @@ class _MyAppState extends State<MyApp> {
           foregroundColor: Colors.deepOrange,
         ),
       ),
-
       textTheme: TextTheme(
         titleMedium: GoogleFonts.inter(
           color: Colors.white,
@@ -106,6 +126,27 @@ class _MyAppState extends State<MyApp> {
           fontSize: 14,
         ),
         bodySmall: GoogleFonts.interTight(color: Colors.white),
+      ),
+
+      navigationDrawerTheme: NavigationDrawerThemeData(
+        backgroundColor: Colors.black,
+        indicatorColor: Colors.deepOrange,
+        indicatorShape: Border.all(style: BorderStyle.solid),
+        tileHeight: 75,
+        iconTheme: WidgetStateProperty.resolveWith((states) {
+          return IconThemeData(
+            color: states.contains(WidgetState.selected)
+                ? Colors.black
+                : Colors.white,
+          );
+        }),
+        labelTextStyle: WidgetStateProperty.resolveWith((states) {
+          return GoogleFonts.inter(
+            color: states.contains(WidgetState.selected)
+                ? Colors.black
+                : Colors.white,
+          );
+        }),
       ),
 
       cardTheme: CardThemeData(

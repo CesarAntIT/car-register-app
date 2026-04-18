@@ -1,7 +1,6 @@
 import 'package:car_api_final_app/pages/care_videos_page.dart';
 import 'package:car_api_final_app/pages/news_list_page.dart';
 import 'package:car_api_final_app/pages/foro_lista_page.dart';
-import 'package:car_api_final_app/pages/combustible_list_page.dart';
 import 'package:car_api_final_app/pages/catalogo_vehiculos_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';

@@ -1,4 +1,5 @@
 import 'package:car_api_final_app/services/http_service.dart';
+import 'package:car_api_final_app/widgets/foro_list_item.dart';
 import 'package:flutter/material.dart';
 
 class ForoListaPage extends StatefulWidget {
@@ -57,46 +58,10 @@ class _ForoListaPageState extends State<ForoListaPage> {
                 itemCount: _temas.length,
                 itemBuilder: (context, index) {
                   final t = _temas[index];
-                  return Card(
-                    margin: const EdgeInsets.only(bottom: 10),
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        backgroundImage: NetworkImage(t['vehiculoFoto'] ?? ''),
-                        onBackgroundImageError: (_, __) {},
-                        child: const Icon(Icons.directions_car),
-                      ),
-                      title: Text(
-                        t['titulo'] ?? '',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(t['autor'] ?? ''),
-                          Text(
-                            t['vehiculo'] ?? '',
-                            style: const TextStyle(color: Colors.deepOrange),
-                          ),
-                        ],
-                      ),
-                      trailing: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Icon(Icons.comment, size: 16),
-                          Text('${t['totalRespuestas'] ?? 0}'),
-                        ],
-                      ),
-                      onTap: () => Navigator.pushNamed(
-                        context,
-                        '/foro/detalle',
-                        arguments: t['id'],
-                      ),
-                    ),
-                  );
+                  return ForoListItem(t: t);
                 },
               ),
             ),
-
       // floatingActionButton: FloatingActionButton.extended(
       //   backgroundColor: Colors.deepOrange,
       //   foregroundColor: Colors.white,

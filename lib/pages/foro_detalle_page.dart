@@ -129,7 +129,7 @@ class _ForoDetallePageState extends State<ForoDetallePage> {
                                     _tema!['descripcion'] ?? '',
                                     style: Theme.of(
                                       context,
-                                    ).textTheme.displayMedium,
+                                    ).textTheme.labelMedium,
                                   ),
                                   const SizedBox(height: 8),
                                   Row(

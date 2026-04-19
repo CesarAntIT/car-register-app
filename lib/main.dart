@@ -1,6 +1,6 @@
+import 'package:car_api_final_app/widgets/navi_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:car_api_final_app/services/dotenv_service.dart';
-import 'package:car_api_final_app/widgets/main_page_scaffold.dart';
 import 'package:car_api_final_app/pages/combustible_list_page.dart';
 import 'package:car_api_final_app/pages/combustible_registro_page.dart';
 import 'package:car_api_final_app/pages/foro_crear_tema_page.dart';
@@ -37,7 +37,7 @@ class _MyAppState extends State<MyApp> {
 
       initialRoute: '/',
       routes: {
-        '/': (context) => MainScaffold(),
+        '/': (context) => MainAppNavigation(),
         '/combustible': (context) {
           final vehiculoId = ModalRoute.of(context)!.settings.arguments as int;
           return CombustibleListPage(vehiculoId: vehiculoId);
@@ -76,13 +76,33 @@ class _MyAppState extends State<MyApp> {
         foregroundColor: Colors.white,
         titleTextStyle: GoogleFonts.sairaStencilOne(fontSize: 26),
       ),
-      textTheme: TextTheme(displayMedium: GoogleFonts.interTight(fontSize: 14)),
+      textTheme: TextTheme(labelMedium: GoogleFonts.interTight(fontSize: 14)),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         elevation: 20,
         type: BottomNavigationBarType.fixed,
         backgroundColor: Colors.deepOrange,
         selectedItemColor: Colors.black,
         unselectedItemColor: Colors.white,
+      ),
+      navigationDrawerTheme: NavigationDrawerThemeData(
+        backgroundColor: Colors.white,
+        indicatorColor: Colors.deepOrange,
+        indicatorShape: Border.all(style: BorderStyle.none),
+        tileHeight: 75,
+        iconTheme: WidgetStateProperty.resolveWith((states) {
+          return IconThemeData(
+            color: states.contains(WidgetState.selected)
+                ? Colors.white
+                : Colors.black,
+          );
+        }),
+        labelTextStyle: WidgetStateProperty.resolveWith((states) {
+          return GoogleFonts.inter(
+            color: states.contains(WidgetState.selected)
+                ? Colors.white
+                : Colors.black,
+          );
+        }),
       ),
     );
   }
@@ -95,17 +115,35 @@ class _MyAppState extends State<MyApp> {
           foregroundColor: Colors.deepOrange,
         ),
       ),
-
       textTheme: TextTheme(
         titleMedium: GoogleFonts.inter(
           color: Colors.white,
           fontWeight: FontWeight(500),
         ),
-        displayMedium: GoogleFonts.interTight(
-          color: Colors.white,
-          fontSize: 14,
-        ),
+        labelMedium: GoogleFonts.interTight(color: Colors.white, fontSize: 14),
+
         bodySmall: GoogleFonts.interTight(color: Colors.white),
+      ),
+
+      navigationDrawerTheme: NavigationDrawerThemeData(
+        backgroundColor: Colors.black,
+        indicatorColor: Colors.deepOrange,
+        indicatorShape: Border.all(style: BorderStyle.solid),
+        tileHeight: 75,
+        iconTheme: WidgetStateProperty.resolveWith((states) {
+          return IconThemeData(
+            color: states.contains(WidgetState.selected)
+                ? Colors.black
+                : Colors.white,
+          );
+        }),
+        labelTextStyle: WidgetStateProperty.resolveWith((states) {
+          return GoogleFonts.inter(
+            color: states.contains(WidgetState.selected)
+                ? Colors.black
+                : Colors.white,
+          );
+        }),
       ),
 
       cardTheme: CardThemeData(

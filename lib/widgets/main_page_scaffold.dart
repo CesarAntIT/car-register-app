@@ -3,7 +3,6 @@ import 'package:car_api_final_app/pages/news_list_page.dart';
 import 'package:car_api_final_app/pages/foro_lista_page.dart';
 import 'package:car_api_final_app/pages/catalogo_vehiculos_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class MainScaffold extends StatefulWidget {
   const MainScaffold({super.key});
@@ -31,26 +30,27 @@ class _MainScaffoldState extends State<MainScaffold> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text.rich(
-          TextSpan(
-            text: "AUTOZONE",
-            style: GoogleFonts.sairaStencilOne(
-              fontSize: 30,
-              fontStyle: FontStyle.italic,
-            ),
-            children: const [
-              TextSpan(
-                text: "\nItla Vehicle Management\n",
-                style: TextStyle(fontSize: 10),
-              ),
-            ],
-          ),
-        ),
-        actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.account_circle)),
-        ],
-      ),
+      //[Moved to Navi_Drawer.dart]
+      // appBar: AppBar(
+      //   title: Text.rich(
+      //     TextSpan(
+      //       text: "AUTOZONE",
+      //       style: GoogleFonts.sairaStencilOne(
+      //         fontSize: 30,
+      //         fontStyle: FontStyle.italic,
+      //       ),
+      //       children: const [
+      //         TextSpan(
+      //           text: "\nItla Vehicle Management\n",
+      //           style: TextStyle(fontSize: 10),
+      //         ),
+      //       ],
+      //     ),
+      //   ),
+      //   actions: [
+      //     IconButton(onPressed: () {}, icon: const Icon(Icons.account_circle)),
+      //   ],
+      // ),
       body: PageView(
         controller: _pageController,
         onPageChanged: _changePage,
@@ -62,6 +62,26 @@ class _MainScaffoldState extends State<MainScaffold> {
           ForoListaPage(),
         ],
       ),
+
+      //[Moved to navi_drawer.dart]
+      // drawer: NavigationDrawer(
+      //   header: Text.rich(
+      //     TextSpan(
+      //       text: "AUTOZONE",
+      //       style: GoogleFonts.sairaStencilOne(
+      //         fontSize: 30,
+      //         fontStyle: FontStyle.italic,
+      //       ),
+      //       children: const [
+      //         TextSpan(
+      //           text: "\nItla Vehicle Management\n",
+      //           style: TextStyle(fontSize: 10),
+      //         ),
+      //       ],
+      //     ),
+      //   ),
+      //   children: [],
+      // ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentPage,
         onTap: (index) {

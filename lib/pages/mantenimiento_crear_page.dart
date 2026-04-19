@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'package:car_api_final_app/services/http_service.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class MantenimientoCrearPage extends StatefulWidget {
   final int vehiculoId;
@@ -17,6 +19,10 @@ class _MantenimientoCrearPageState extends State<MantenimientoCrearPage> {
   final _costoController = TextEditingController();
   final _fechaController = TextEditingController();
   bool _loading = false;
+
+  final List<File> _fotos = [];
+  final ImagePicker _picker = ImagePicker();
+  final int _maxFotos = 5;
 
   final List<String> _tipos = [
     'Preventivo',
@@ -54,12 +60,54 @@ class _MantenimientoCrearPageState extends State<MantenimientoCrearPage> {
     }
   }
 
+  Future<void> _agregarFoto() async {
+    if (_fotos.length >= _maxFotos) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Máximo 5 fotos permitidas')),
+      );
+      return;
+    }
+    showModalBottomSheet(
+      context: context,
+      builder: (ctx) => SafeArea(
+        child: Wrap(
+          children: [
+            ListTile(
+              leading: const Icon(Icons.photo_library),
+              title: const Text('Galería'),
+              onTap: () async {
+                Navigator.pop(ctx);
+                final XFile? img = await _picker.pickImage(
+                  source: ImageSource.gallery,
+                );
+                if (img != null) setState(() => _fotos.add(File(img.path)));
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.photo_camera),
+              title: const Text('Cámara'),
+              onTap: () async {
+                Navigator.pop(ctx);
+                final XFile? img = await _picker.pickImage(
+                  source: ImageSource.camera,
+                );
+                if (img != null) setState(() => _fotos.add(File(img.path)));
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _eliminarFoto(int index) => setState(() => _fotos.removeAt(index));
+
   Future<void> _guardar() async {
     if (!_formKey.currentState!.validate()) return;
-
     setState(() => _loading = true);
 
-    final ok = await HttpService.registrarMantenimiento(
+    // 1. Crear mantenimiento y obtener su id
+    final mantenimientoId = await HttpService.registrarMantenimiento(
       vehiculoId: widget.vehiculoId,
       tipo: _tipo,
       costo: double.parse(_costoController.text),
@@ -67,24 +115,33 @@ class _MantenimientoCrearPageState extends State<MantenimientoCrearPage> {
       fecha: _fechaController.text,
     );
 
-    setState(() => _loading = false);
-
-    if (ok) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Mantenimiento registrado exitosamente'),
-          backgroundColor: Colors.green,
-        ),
-      );
-      Navigator.pop(context);
-    } else {
+    if (mantenimientoId == null) {
+      setState(() => _loading = false);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Error al guardar el mantenimiento'),
           backgroundColor: Colors.red,
         ),
       );
+      return;
     }
+
+    // 2. Subir fotos si hay
+    if (_fotos.isNotEmpty) {
+      await HttpService.subirFotosMantenimiento(
+        mantenimientoId: mantenimientoId,
+        rutasFotos: _fotos.map((f) => f.path).toList(),
+      );
+    }
+
+    setState(() => _loading = false);
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Mantenimiento registrado exitosamente'),
+        backgroundColor: Colors.green,
+      ),
+    );
+    Navigator.pop(context);
   }
 
   @override
@@ -101,8 +158,8 @@ class _MantenimientoCrearPageState extends State<MantenimientoCrearPage> {
               const Text('Tipo', style: TextStyle(fontWeight: FontWeight.bold)),
               const SizedBox(height: 8),
               DropdownButtonFormField<String>(
-                style: const TextStyle(color: Colors.black),
                 value: _tipo,
+                style: const TextStyle(color: Colors.black),
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.build),
@@ -114,7 +171,7 @@ class _MantenimientoCrearPageState extends State<MantenimientoCrearPage> {
               ),
               const SizedBox(height: 16),
 
-              // PIEZAS / DESCRIPCIÓN
+              // PIEZAS
               TextFormField(
                 controller: _piezasController,
                 maxLines: 3,
@@ -156,9 +213,76 @@ class _MantenimientoCrearPageState extends State<MantenimientoCrearPage> {
                 validator: (v) =>
                     v == null || v.isEmpty ? 'Selecciona una fecha' : null,
               ),
+              const SizedBox(height: 20),
+
+              // FOTOS
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Fotos (${_fotos.length}/$_maxFotos)',
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  TextButton.icon(
+                    onPressed: _agregarFoto,
+                    icon: const Icon(
+                      Icons.add_a_photo,
+                      color: Colors.deepOrange,
+                    ),
+                    label: const Text(
+                      'Agregar',
+                      style: TextStyle(color: Colors.deepOrange),
+                    ),
+                  ),
+                ],
+              ),
+              if (_fotos.isNotEmpty)
+                SizedBox(
+                  height: 100,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: _fotos.length,
+                    itemBuilder: (context, index) {
+                      return Stack(
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(right: 8),
+                            width: 100,
+                            height: 100,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              image: DecorationImage(
+                                image: FileImage(_fotos[index]),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            top: 0,
+                            right: 8,
+                            child: GestureDetector(
+                              onTap: () => _eliminarFoto(index),
+                              child: Container(
+                                decoration: const BoxDecoration(
+                                  color: Colors.red,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: const Icon(
+                                  Icons.close,
+                                  color: Colors.white,
+                                  size: 18,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                ),
               const SizedBox(height: 30),
 
-              // BOTÓN GUARDAR
+              // GUARDAR
               SizedBox(
                 width: double.infinity,
                 height: 50,

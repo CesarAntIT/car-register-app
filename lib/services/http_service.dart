@@ -287,13 +287,17 @@ class HttpService {
 
   // Lista de mantenimientos de un vehículo
   static Future<List<Mantenimiento>> getListaMantenimientos(
-    int vehiculoId,
-  ) async {
+    int vehiculoId, {
+    String? tipo,
+  }) async {
     final token = await getToken();
     try {
       final res = await _dio.get(
         '/mantenimientos',
-        queryParameters: {'vehiculo_id': vehiculoId},
+        queryParameters: {
+          'vehiculo_id': vehiculoId,
+          if (tipo != null) 'tipo': tipo,
+        },
         options: Options(
           headers: {
             'Authorization': 'Bearer $token',
@@ -314,7 +318,7 @@ class HttpService {
   }
 
   // Registrar un mantenimiento
-  static Future<bool> registrarMantenimiento({
+  static Future<int?> registrarMantenimiento({
     required int vehiculoId,
     required String tipo,
     required double costo,
@@ -343,19 +347,36 @@ class HttpService {
           },
         ),
       );
-      return res.data['success'] == true;
+      if (res.data['success'] == true) {
+        return res.data['data']['id'] as int?;
+      }
     } on DioException catch (e) {
       print("Dio Error: ${e.message}");
     }
-    return false;
+    return null;
   }
 
-  // Eliminar un mantenimiento
-  static Future<bool> eliminarMantenimiento(int id) async {
+  // Subir fotos (max 5)
+  static Future<bool> subirFotosMantenimiento({
+    required int mantenimientoId,
+    required List<String> rutasFotos,
+  }) async {
     final token = await getToken();
     try {
-      final res = await _dio.delete(
-        '/mantenimientos/$id',
+      final formData = FormData.fromMap({
+        'datax': json.encode({'mantenimiento_id': mantenimientoId}),
+        'fotos[]': await Future.wait(
+          rutasFotos.map(
+            (path) async => await MultipartFile.fromFile(
+              path,
+              filename: path.split('/').last,
+            ),
+          ),
+        ),
+      });
+      final res = await _dio.post(
+        '/mantenimientos/fotos',
+        data: formData,
         options: Options(
           headers: {
             'Authorization': 'Bearer $token',

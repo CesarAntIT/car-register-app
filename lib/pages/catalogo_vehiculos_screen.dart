@@ -1,7 +1,6 @@
 import 'package:car_api_final_app/models/vehiculo_model.dart';
 import 'package:car_api_final_app/widgets/vehicle_list_item.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../services/vehiculo_service.dart';
 import 'formulario_vehiculo_screen.dart';
 

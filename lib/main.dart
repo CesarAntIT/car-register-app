@@ -1,7 +1,6 @@
 import 'package:car_api_final_app/widgets/navi_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:car_api_final_app/services/dotenv_service.dart';
-import 'package:car_api_final_app/widgets/main_page_scaffold.dart';
 import 'package:car_api_final_app/pages/combustible_list_page.dart';
 import 'package:car_api_final_app/pages/combustible_registro_page.dart';
 import 'package:car_api_final_app/pages/foro_crear_tema_page.dart';

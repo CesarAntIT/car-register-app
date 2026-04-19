@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -24,8 +23,18 @@ class LandingPage extends StatelessWidget {
       },
       {
         'url':
-            'https://images.unsplash.com/photo-1583121274602-3e2820c69888?q=80&w=1000',
+            'https://images.stockcake.com/public/1/e/5/1e52a6bb-302f-491d-9ce7-631521fd9e17_large/city-night-drive-stockcake.jpg',
         'quote': 'No solo conduces, cuidas una obra de arte.',
+      },
+      {
+        'url':
+            'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?q=80&w=1000',
+        'quote': 'La potencia sin control no es nada; el cuidado es la clave.',
+      },
+      {
+        'url':
+            'https://www.jalopnik.com/jalopnik/images/befea684715ad58d0cdee768b0baae05.jpg',
+        'quote': 'Un motor bien cuidado suena mejor que cualquier canción.',
       },
     ];
 

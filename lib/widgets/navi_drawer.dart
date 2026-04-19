@@ -1,3 +1,4 @@
+import 'package:car_api_final_app/pages/about_page.dart';
 import 'package:car_api_final_app/pages/catalogo_vehiculos_screen.dart';
 import 'package:car_api_final_app/widgets/main_page_scaffold.dart';
 import 'package:flutter/material.dart';
@@ -85,7 +86,7 @@ class _MainAppNavigationState extends State<MainAppNavigation> {
       body: [
         MainScaffold(),
         CatalogoVehiculosScreen(),
-        Placeholder(),
+        AboutPage(),
       ][_pageIndex],
     );
   }

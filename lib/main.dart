@@ -77,7 +77,7 @@ class _MyAppState extends State<MyApp> {
         foregroundColor: Colors.white,
         titleTextStyle: GoogleFonts.sairaStencilOne(fontSize: 26),
       ),
-      textTheme: TextTheme(displayMedium: GoogleFonts.interTight(fontSize: 14)),
+      textTheme: TextTheme(labelMedium: GoogleFonts.interTight(fontSize: 14)),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         elevation: 20,
         type: BottomNavigationBarType.fixed,
@@ -121,10 +121,8 @@ class _MyAppState extends State<MyApp> {
           color: Colors.white,
           fontWeight: FontWeight(500),
         ),
-        displayMedium: GoogleFonts.interTight(
-          color: Colors.white,
-          fontSize: 14,
-        ),
+        labelMedium: GoogleFonts.interTight(color: Colors.white, fontSize: 14),
+
         bodySmall: GoogleFonts.interTight(color: Colors.white),
       ),
 

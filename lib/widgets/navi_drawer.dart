@@ -1,5 +1,6 @@
 import 'package:car_api_final_app/pages/about_page.dart';
 import 'package:car_api_final_app/pages/catalogo_vehiculos_screen.dart';
+import 'package:car_api_final_app/pages/landing_page.dart';
 import 'package:car_api_final_app/widgets/main_page_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -73,6 +74,11 @@ class _MainAppNavigationState extends State<MainAppNavigation> {
             label: Text("Inicio"),
           ),
           NavigationDrawerDestination(
+            icon: Icon(Icons.no_accounts),
+            label: Text("Páginas Publicas"),
+          ),
+
+          NavigationDrawerDestination(
             icon: Icon(Icons.car_repair),
             label: Text("Mis Vehiculos"),
           ),
@@ -84,6 +90,13 @@ class _MainAppNavigationState extends State<MainAppNavigation> {
       ),
 
       body: [
+        LandingPage(
+          onCardPressed: (index) {
+            setState(() {
+              _pageIndex = index;
+            });
+          },
+        ),
         MainScaffold(),
         CatalogoVehiculosScreen(),
         AboutPage(),

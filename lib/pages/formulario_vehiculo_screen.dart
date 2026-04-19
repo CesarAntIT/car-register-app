@@ -264,29 +264,43 @@ class _FormularioVehiculoScreenState extends State<FormularioVehiculoScreen> {
               ),
               const SizedBox(height: 20),
               if (widget.vehiculo != null)
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  spacing: 10,
-                  children: <Widget>[
-                    ElevatedButton.icon(
-                      onPressed: () async {
-                        await Navigator.pushNamed(
-                          context,
-                          '/combustible',
-                          arguments: widget.vehiculo!.id,
-                        );
-                      },
-                      label: Text("Combustibles"),
-                      icon: Icon(Icons.local_gas_station),
+                Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      spacing: 10,
+                      children: [
+                        ElevatedButton.icon(
+                          onPressed: () async {
+                            await Navigator.pushNamed(
+                              context,
+                              '/combustible',
+                              arguments: widget.vehiculo!.id,
+                            );
+                          },
+                          label: Text("Combustibles"),
+                          icon: Icon(Icons.local_gas_station),
+                        ),
+                        ElevatedButton.icon(
+                          onPressed: () async {
+                            await Navigator.pushNamed(
+                              context,
+                              '/mantenimiento',
+                              arguments: widget.vehiculo!.id,
+                            );
+                          },
+                          label: Text("Mantenimiento"),
+                          icon: Icon(Icons.build),
+                        ),
+                      ],
                     ),
+                    const SizedBox(height: 8),
                     ElevatedButton.icon(
                       onPressed: () async {
                         await Navigator.pushNamed(
                           context,
                           '/foro/crear',
-                          arguments: widget
-                              .vehiculo!
-                              .id, // vehiculoId — cuando haya login, pasar el real
+                          arguments: widget.vehiculo!.id,
                         );
                       },
                       label: Text("Crear Tema"),

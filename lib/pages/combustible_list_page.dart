@@ -21,21 +21,21 @@ class _CombustibleListPageState extends State<CombustibleListPage> {
     _cargar();
   }
 
-Future<void> _cargar() async {
-  setState(() => _loading = true);
-  try {
-    final data = await HttpService.getListaCombustibles(
-      widget.vehiculoId,
-      tipo: _filtroTipo,
-    ).timeout(const Duration(seconds: 10));
-    setState(() {
-      _registros = data;
-      _loading = false;
-    });
-  } catch (e) {
-    setState(() => _loading = false);
+  Future<void> _cargar() async {
+    setState(() => _loading = true);
+    try {
+      final data = await HttpService.getListaCombustibles(
+        widget.vehiculoId,
+        tipo: _filtroTipo,
+      ).timeout(const Duration(seconds: 10));
+      setState(() {
+        _registros = data;
+        _loading = false;
+      });
+    } catch (e) {
+      setState(() => _loading = false);
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -45,13 +45,16 @@ Future<void> _cargar() async {
         actions: [
           PopupMenuButton<String?>(
             icon: const Icon(Icons.filter_list),
-              onSelected: (value) {
-                setState(() => _filtroTipo = value!.isEmpty ? null : value);
-                _cargar();
-              },
+            onSelected: (value) {
+              setState(() => _filtroTipo = value!.isEmpty ? null : value);
+              _cargar();
+            },
             itemBuilder: (_) => [
               const PopupMenuItem(value: '', child: Text("Todos")),
-              const PopupMenuItem(value: "combustible", child: Text("Combustible")),
+              const PopupMenuItem(
+                value: "combustible",
+                child: Text("Combustible"),
+              ),
               const PopupMenuItem(value: "aceite", child: Text("Aceite")),
             ],
           ),
@@ -60,45 +63,43 @@ Future<void> _cargar() async {
       body: _loading
           ? const Center(child: CircularProgressIndicator())
           : _registros.isEmpty
-              ? const Center(child: Text("No hay registros aún."))
-              : ListView.builder(
-                  padding: const EdgeInsets.all(12),
-                  itemCount: _registros.length,
-                  itemBuilder: (context, index) {
-                    final r = _registros[index];
-                    final esCombustible = r.tipo == "combustible";
-                    return Card(
-                      margin: const EdgeInsets.only(bottom: 10),
-                      child: ListTile(
-                        leading: CircleAvatar(
-                          backgroundColor: esCombustible
-                              ? Colors.deepOrange
-                              : Colors.blueGrey,
-                          child: Icon(
-                            esCombustible
-                                ? Icons.local_gas_station
-                                : Icons.oil_barrel,
-                            color: Colors.white,
-                          ),
-                        ),
-                        title: Text(
-                          r.tipo.toUpperCase(),
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        subtitle: Text(
-                          "${r.cantidad} ${r.unidad}  •  ${r.fecha}",
-                        ),
-                        trailing: Text(
-                          "RD\$ ${r.monto.toStringAsFixed(2)}",
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.deepOrange,
-                          ),
-                        ),
+          ? const Center(child: Text("No hay registros aún."))
+          : ListView.builder(
+              padding: const EdgeInsets.all(12),
+              itemCount: _registros.length,
+              itemBuilder: (context, index) {
+                final r = _registros[index];
+                final esCombustible = r.tipo == "combustible";
+                return Card(
+                  margin: const EdgeInsets.only(bottom: 10),
+                  child: ListTile(
+                    leading: CircleAvatar(
+                      backgroundColor: esCombustible
+                          ? Colors.deepOrange
+                          : Colors.blueGrey,
+                      child: Icon(
+                        esCombustible
+                            ? Icons.local_gas_station
+                            : Icons.oil_barrel,
+                        color: Colors.white,
                       ),
-                    );
-                  },
-                ),
+                    ),
+                    title: Text(
+                      r.tipo.toUpperCase(),
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: Text("${r.cantidad} ${r.unidad}  •  ${r.fecha}"),
+                    trailing: Text(
+                      "RD\$ ${r.monto.toStringAsFixed(2)}",
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.deepOrange,
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.deepOrange,
         onPressed: () async {

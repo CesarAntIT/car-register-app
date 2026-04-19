@@ -7,6 +7,8 @@ import 'package:car_api_final_app/pages/foro_crear_tema_page.dart';
 import 'package:car_api_final_app/pages/foro_lista_page.dart';
 import 'package:car_api_final_app/pages/foro_detalle_page.dart';
 import 'package:car_api_final_app/pages/foro_mis_temas_page.dart';
+import 'package:car_api_final_app/pages/mantenimientos_page.dart';
+import 'package:car_api_final_app/pages/mantenimiento_crear_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'pages/catalogo_vehiculos_screen.dart';
 
@@ -45,6 +47,15 @@ class _MyAppState extends State<MyApp> {
         '/combustible/registro': (context) {
           final vehiculoId = ModalRoute.of(context)!.settings.arguments as int;
           return CombustibleRegistroPage(vehiculoId: vehiculoId);
+        },
+
+        '/mantenimiento': (context) {
+          final vehiculoId = ModalRoute.of(context)!.settings.arguments as int;
+          return MantenimientoPage(vehiculoId: vehiculoId);
+        },
+        '/mantenimiento/crear': (context) {
+          final vehiculoId = ModalRoute.of(context)!.settings.arguments as int;
+          return MantenimientoCrearPage(vehiculoId: vehiculoId);
         },
 
         '/foro/crear': (context) {

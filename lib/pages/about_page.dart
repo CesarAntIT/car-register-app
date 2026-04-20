@@ -11,7 +11,7 @@ class AboutPage extends StatelessWidget {
       lastname: "Aybar Vargas",
       matricula: "2024-0096",
       phone: "+18298907122",
-      email: "antonio_c1723@itla.edu.do",
+      email: "antonio_c1723@hotmail.com",
       imageFile: "assets/dev_profiles/dev_profile_Cesar.jpeg",
     ),
     AboutDev(

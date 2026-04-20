@@ -220,6 +220,7 @@ class _FinanzasPageState extends State<FinanzasPage> {
             bottom: 16,
             left: 16,
             child: FloatingActionButton.small(
+              heroTag: 'currency_toggle',
               onPressed: () => setState(() => _isUSD = !_isUSD),
               backgroundColor: Colors.white,
               child: Image.asset(
@@ -234,6 +235,7 @@ class _FinanzasPageState extends State<FinanzasPage> {
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: Colors.deepOrange,
         onPressed: _abrirRegistroActual,
+        heroTag: 'register',
         icon: const Icon(Icons.add, color: Colors.white),
         label: Text(
           mostrandoGastos ? 'Agregar gasto' : 'Agregar ingreso',

@@ -180,17 +180,11 @@ class HttpService {
 
   // Detalle de tema con respuestas
   static Future<Map<String, dynamic>?> getDetalleTema(int id) async {
-    final token = await getToken();
     try {
       final res = await _dio.get(
-        '/foro/detalle',
+        '/publico/foro/detalle',
         queryParameters: {'id': id},
-        options: Options(
-          headers: {
-            'Authorization': 'Bearer $token',
-            'Accept': 'application/json',
-          },
-        ),
+        options: Options(headers: {'Accept': 'application/json'}),
       );
       if (res.data['success'] == true) return res.data['data'];
     } on DioException catch (e) {

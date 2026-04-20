@@ -52,7 +52,7 @@ class AboutPage extends StatelessWidget {
       matricula: "2024-0023",
       phone: "+18299337248",
       email: "20240023@itla.edu.do",
-      imageFile: "",
+      imageFile: "assets/dev_profiles/dev_profile_Arwin.jpeg",
     ),
     AboutDev(
       name: "Eudy Yunior",

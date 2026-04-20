@@ -51,27 +51,42 @@ class _ResumenPageState extends State<ResumenPage> {
             item("Total Ingresos", resumen!["totalIngresos"]),
             item("Total Invertido", resumen!["totalInvertido"]),
             item("Balance", resumen!["balance"]),
-            ElevatedButton.icon(
-              onPressed: () async {
-                await Navigator.pushNamed(
-                  context,
-                  '/combustible',
-                  arguments: widget.vehiculoId,
-                );
-              },
-              label: Text("Combustibles"),
-              icon: Icon(Icons.local_gas_station),
-            ),
-            ElevatedButton.icon(
-              onPressed: () async {
-                await Navigator.pushNamed(
-                  context,
-                  '/mantenimiento',
-                  arguments: widget.vehiculoId,
-                );
-              },
-              label: Text("Mantenimiento"),
-              icon: Icon(Icons.build),
+            Wrap(
+              children: [
+                ElevatedButton.icon(
+                  onPressed: () async {
+                    await Navigator.pushNamed(
+                      context,
+                      '/combustible',
+                      arguments: widget.vehiculoId,
+                    );
+                  },
+                  label: Text("Combustibles"),
+                  icon: Icon(Icons.local_gas_station),
+                ),
+                ElevatedButton.icon(
+                  onPressed: () async {
+                    await Navigator.pushNamed(
+                      context,
+                      '/mantenimiento',
+                      arguments: widget.vehiculoId,
+                    );
+                  },
+                  label: Text("Mantenimiento"),
+                  icon: Icon(Icons.build),
+                ),
+                ElevatedButton.icon(
+                  onPressed: () async {
+                    await Navigator.pushNamed(
+                      context,
+                      '/finanzas',
+                      arguments: widget.vehiculoId,
+                    );
+                  },
+                  label: Text("Registrar Gastos y Ingresos"),
+                  icon: Icon(Icons.build),
+                ),
+              ],
             ),
           ],
         ),

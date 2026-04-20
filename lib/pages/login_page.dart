@@ -47,7 +47,11 @@ class _LoginPageState extends State<LoginPage> {
       refs.setString('TOKEN', token);
 
       if (mounted) {
-        Navigator.pop(context);
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          '/',
+          (Route<dynamic> route) => false,
+        );
       }
     } else {
       ScaffoldMessenger.of(

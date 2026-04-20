@@ -27,6 +27,12 @@ class _MainAppNavigationState extends State<MainAppNavigation> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _pageIndex = 0;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -92,19 +98,16 @@ class _MainAppNavigationState extends State<MainAppNavigation> {
         ],
       ),
 
-      body: IndexedStack(
-        index: _pageIndex,
-        children: [
-          LandingPage(
-            onCardPressed: (index) => setState(() {
-              _pageIndex = index;
-            }),
-          ),
-          MainScaffold(),
-          CatalogoVehiculosScreen(),
-          AboutPage(),
-        ],
-      ),
+      body: [
+        LandingPage(
+          onCardPressed: (index) => setState(() {
+            _pageIndex = index;
+          }),
+        ),
+        MainScaffold(),
+        CatalogoVehiculosScreen(),
+        AboutPage(),
+      ][_pageIndex],
     );
   }
 }

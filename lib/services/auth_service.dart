@@ -6,19 +6,16 @@ class AuthService {
 
   // LOGIN
   static Future<Map<String, dynamic>?> login(
-      String matricula, String contrasena) async {
+    String matricula,
+    String contrasena,
+  ) async {
     final url = Uri.parse("$baseUrl/auth/login");
 
     final response = await http.post(
       url,
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
+      headers: {"Content-Type": "application/x-www-form-urlencoded"},
       body: {
-        "datax": jsonEncode({
-          "matricula": matricula,
-          "contrasena": contrasena,
-        })
+        "datax": jsonEncode({"matricula": matricula, "contrasena": contrasena}),
       },
     );
 
@@ -34,16 +31,11 @@ class AuthService {
 
     final response = await http.post(
       url,
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
+      headers: {"Content-Type": "application/x-www-form-urlencoded"},
       body: {
-        "datax": jsonEncode({
-          "matricula": matricula,
-        })
+        "datax": jsonEncode({"matricula": matricula}),
       },
     );
-
 
     if (response.statusCode == 201) {
       return jsonDecode(response.body);
@@ -57,14 +49,9 @@ class AuthService {
 
     final response = await http.post(
       url,
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
+      headers: {"Content-Type": "application/x-www-form-urlencoded"},
       body: {
-        "datax": jsonEncode({
-          "token": token.trim(),
-          "contrasena": contrasena,
-        })
+        "datax": jsonEncode({"token": token.trim(), "contrasena": contrasena}),
       },
     );
 
@@ -77,13 +64,9 @@ class AuthService {
 
     final response = await http.post(
       url,
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
+      headers: {"Content-Type": "application/x-www-form-urlencoded"},
       body: {
-        "datax": jsonEncode({
-          "matricula": matricula,
-        })
+        "datax": jsonEncode({"matricula": matricula}),
       },
     );
 

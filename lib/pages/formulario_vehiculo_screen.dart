@@ -294,6 +294,17 @@ class _FormularioVehiculoScreenState extends State<FormularioVehiculoScreen> {
                           label: Text("Resumen Financiero"),
                           icon: Icon(Icons.summarize),
                         ),
+                        ElevatedButton.icon(
+                          onPressed: () async {
+                            await Navigator.pushNamed(
+                              context,
+                              '/gomas',
+                              arguments: widget.vehiculo!.id,
+                            );
+                          },
+                          label: Text("Gomas"),
+                          icon: Icon(Icons.tire_repair),
+                        ),
                       ],
                     ),
                   ],

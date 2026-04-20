@@ -1,7 +1,7 @@
+import 'package:car_api_final_app/pages/login_page.dart';
 import 'package:car_api_final_app/services/http_service.dart';
 import 'package:flutter/material.dart';
 import '../services/profile_service.dart';
-import 'resumen_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -26,10 +26,39 @@ class _ProfilePageState extends State<ProfilePage> {
     setState(() => profile = data);
   }
 
+  void _logout() async {
+    await ProfileService.logout();
+    if (mounted) {
+      Navigator.of(context).pushNamedAndRemoveUntil(
+        '/', // The name of your new route
+        (Route<dynamic> route) => false, // This condition deletes everything
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     if (profile == null) {
-      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+      return Scaffold(
+        appBar: AppBar(title: const Text("Perfil")),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(),
+              SizedBox(height: 50),
+              Text("No aparece tu perfil?"),
+              TextButton(
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginPage()),
+                ),
+                child: Text("Inicia Sesión !!"),
+              ),
+            ],
+          ),
+        ),
+      );
     }
 
     final user = profile!["data"];
@@ -54,26 +83,20 @@ class _ProfilePageState extends State<ProfilePage> {
                   ? const Icon(Icons.person, size: 50)
                   : null,
             ),
-
             const SizedBox(height: 15),
-
             // NOMBRE
             Text(
               "${user["nombre"]} ${user["apellido"]}",
               style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
-
             const SizedBox(height: 5),
-
             Text(
               user["correo"] ?? "",
               style: const TextStyle(color: Colors.grey),
               textAlign: TextAlign.center,
             ),
-
             const SizedBox(height: 20),
-
             // 🔥 TARJETAS
             Card(
               child: ListTile(
@@ -82,7 +105,6 @@ class _ProfilePageState extends State<ProfilePage> {
                 subtitle: Text(user["matricula"] ?? ""),
               ),
             ),
-
             Card(
               child: ListTile(
                 leading: const Icon(Icons.group),
@@ -90,7 +112,6 @@ class _ProfilePageState extends State<ProfilePage> {
                 subtitle: Text(user["grupo"] ?? "N/A"),
               ),
             ),
-
             Card(
               child: ListTile(
                 leading: const Icon(Icons.security),
@@ -100,6 +121,11 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
 
             const SizedBox(height: 25),
+            ElevatedButton.icon(
+              onPressed: () => _logout(),
+              icon: Icon(Icons.logout),
+              label: Text("Salir de la Sesión"),
+            ),
           ],
         ),
       ),

@@ -234,8 +234,9 @@ class _FormularioVehiculoScreenState extends State<FormularioVehiculoScreen> {
                 keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value!.isEmpty) return 'Campo requerido';
-                  if (int.tryParse(value) == null)
+                  if (int.tryParse(value) == null) {
                     return 'Debe ser un número válido';
+                  }
                   return null;
                 },
               ),
@@ -257,8 +258,9 @@ class _FormularioVehiculoScreenState extends State<FormularioVehiculoScreen> {
                 keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value!.isEmpty) return 'Campo requerido';
-                  if (int.tryParse(value) == null)
+                  if (int.tryParse(value) == null) {
                     return 'Debe ser un número válido';
+                  }
                   return null;
                 },
               ),
@@ -269,18 +271,28 @@ class _FormularioVehiculoScreenState extends State<FormularioVehiculoScreen> {
                     Wrap(
                       alignment: WrapAlignment.center,
                       spacing: 10,
-                      runSpacing: 10,
                       children: [
                         ElevatedButton.icon(
                           onPressed: () async {
                             await Navigator.pushNamed(
                               context,
-                              '/combustible',
+                              '/foro/crear',
                               arguments: widget.vehiculo!.id,
                             );
                           },
-                          label: Text("Combustibles"),
-                          icon: Icon(Icons.local_gas_station),
+                          label: Text("Crear Tema en el Foro"),
+                          icon: Icon(Icons.book),
+                        ),
+                        ElevatedButton.icon(
+                          onPressed: () async {
+                            await Navigator.pushNamed(
+                              context,
+                              '/vehiculos/resumen',
+                              arguments: widget.vehiculo!.id,
+                            );
+                          },
+                          label: Text("Resumen Financiero"),
+                          icon: Icon(Icons.summarize),
                         ),
                         ElevatedButton.icon(
                           onPressed: () async {
@@ -293,41 +305,7 @@ class _FormularioVehiculoScreenState extends State<FormularioVehiculoScreen> {
                           label: Text("Gomas"),
                           icon: Icon(Icons.tire_repair),
                         ),
-                        ElevatedButton.icon(
-                          onPressed: () async {
-                            await Navigator.pushNamed(
-                              context,
-                              '/mantenimiento',
-                              arguments: widget.vehiculo!.id,
-                            );
-                          },
-                          label: Text("Mantenimiento"),
-                          icon: Icon(Icons.build),
-                        ),
-                        ElevatedButton.icon(
-                          onPressed: () async {
-                            await Navigator.pushNamed(
-                              context,
-                              '/finanzas',
-                              arguments: widget.vehiculo!.id,
-                            );
-                          },
-                          label: Text("Finanzas"),
-                          icon: Icon(Icons.account_balance_wallet),
-                        ),
                       ],
-                    ),
-                    const SizedBox(height: 8),
-                    ElevatedButton.icon(
-                      onPressed: () async {
-                        await Navigator.pushNamed(
-                          context,
-                          '/foro/crear',
-                          arguments: widget.vehiculo!.id,
-                        );
-                      },
-                      label: Text("Crear Tema"),
-                      icon: Icon(Icons.book),
                     ),
                   ],
                 ),

@@ -1,3 +1,5 @@
+import 'package:car_api_final_app/pages/profile_page.dart';
+import 'package:car_api_final_app/pages/resumen_page.dart';
 import 'package:car_api_final_app/widgets/navi_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:car_api_final_app/services/dotenv_service.dart';
@@ -31,7 +33,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   void initState() {
-    DotenvService.SaveAuth();
+    // DotenvService.SaveAuth();
     super.initState();
   }
 
@@ -100,6 +102,11 @@ class _MyAppState extends State<MyApp> {
         },
         '/foro/mis-temas': (context) => const ForoMisTemasPage(),
         '/vehiculos': (context) => const CatalogoVehiculosScreen(),
+        '/perfil': (context) => ProfilePage(),
+        '/vehiculos/resumen': (context) {
+          final vehiculoId = ModalRoute.of(context)!.settings.arguments as int;
+          return ResumenPage(vehiculoId: vehiculoId);
+        },
       },
     );
   }

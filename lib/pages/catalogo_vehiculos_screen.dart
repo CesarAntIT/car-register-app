@@ -22,16 +22,13 @@ class _CatalogoVehiculosScreenState extends State<CatalogoVehiculosScreen> {
     _cargarVehiculos();
   }
 
-  void _cargarVehiculos() {
+  Future<void> _cargarVehiculos() async {
     setState(() {
       _futureVehiculos = service.getVehiculos();
     });
   }
 
-  Future<void> _navegarYAnadir(
-    BuildContext context, [
-    Vehiculo? vehiculo,
-  ]) async {
+  Future _navegarYAnadir(BuildContext context, [Vehiculo? vehiculo]) async {
     final result = await Navigator.push(
       context,
       MaterialPageRoute(
@@ -40,7 +37,7 @@ class _CatalogoVehiculosScreenState extends State<CatalogoVehiculosScreen> {
     );
 
     if (result == true) {
-      _cargarVehiculos();
+      await _cargarVehiculos();
     }
   }
 
@@ -55,42 +52,59 @@ class _CatalogoVehiculosScreenState extends State<CatalogoVehiculosScreen> {
             style: Theme.of(context).appBarTheme.titleTextStyle,
           ),
           Divider(),
-          FutureBuilder<List<Vehiculo>>(
-            future: _futureVehiculos,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              }
-              if (snapshot.hasError) {
-                return const Center(child: Text("Error al cargar datos"));
-              }
+          Expanded(
+            child: RefreshIndicator(
+              onRefresh: _cargarVehiculos,
+              child: FutureBuilder<List<Vehiculo>>(
+                future: _futureVehiculos,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  if (snapshot.hasError) {
+                    return const Center(child: Text("Error al cargar datos"));
+                  }
 
-              final vehiculos = snapshot.data ?? [];
+                  final vehiculos = snapshot.data ?? [];
 
-              if (vehiculos.isEmpty) {
-                return const Center(
-                  child: Text("No hay vehículos registrados"),
-                );
-              }
+                  if (vehiculos.isEmpty) {
+                    return Expanded(
+                      child: const Center(
+                        child: Text("No hay vehículos registrados"),
+                      ),
+                    );
+                  }
 
-              return Expanded(
-                child: ListView.builder(
-                  padding: const EdgeInsets.all(8.0),
-                  itemCount: vehiculos.length,
-                  itemBuilder: (context, index) {
-                    final v = vehiculos[index];
-                    return VehicleListItem(v: v);
-                  },
-                ),
-              );
-            },
+                  return ListView.builder(
+                    padding: const EdgeInsets.all(8.0),
+                    itemCount: vehiculos.length,
+                    itemBuilder: (context, index) {
+                      final v = vehiculos[index];
+                      return VehicleListItem(v: v);
+                    },
+                  );
+                },
+              ),
+            ),
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.deepOrange,
-        child: const Icon(Icons.add, color: Colors.white),
-        onPressed: () => _navegarYAnadir(context),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            onPressed: _cargarVehiculos,
+            child: Icon(Icons.refresh),
+          ),
+          SizedBox(height: 10),
+          FloatingActionButton.large(
+            heroTag: "add",
+            backgroundColor: Colors.deepOrange,
+            child: const Icon(Icons.add, color: Colors.white),
+            onPressed: () => _navegarYAnadir(context),
+          ),
+        ],
       ),
     );
   }

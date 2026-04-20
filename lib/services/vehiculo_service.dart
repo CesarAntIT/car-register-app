@@ -1,12 +1,13 @@
 import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'dart:io';
-
 import 'package:car_api_final_app/models/vehiculo_model.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class VehiculoService {
   final _dio = Dio(BaseOptions(baseUrl: "https://taller-itla.ia3x.com/api"));
+    static const String baseUrl = "https://taller-itla.ia3x.com/api";
 
   Future<String?> _getToken() async {
     final prefs = await SharedPreferences.getInstance();
@@ -36,20 +37,17 @@ class VehiculoService {
   Future<bool> createVehiculo(Vehiculo vehiculo, {File? foto}) async {
     final token = await _getToken();
     try {
-      final Map<String, dynamic> dataMap = {
+      // Para CREAR, la API sí acepta cantidadRuedas y foto en un solo multipart
+      Map<String, dynamic> dataMap = {
         'placa': vehiculo.placa,
         'chasis': vehiculo.chasis,
         'marca': vehiculo.marca,
         'modelo': vehiculo.modelo,
         'anio': vehiculo.anio,
-        // Enviamos ambas variantes para no romper compatibilidad con backend.
-        'cantidadRuedas': vehiculo.cantidadRuedas,
-        'cantidad_ruedas': vehiculo.cantidadRuedas,
+        'cantidadRuedas': vehiculo.cantidadRuedas, // Se envía como número
       };
 
-      final FormData formData = FormData.fromMap({
-        'datax': jsonEncode(dataMap),
-      });
+      FormData formData = FormData.fromMap({'datax': jsonEncode(dataMap)});
 
       if (foto != null) {
         formData.files.add(
@@ -75,8 +73,9 @@ class VehiculoService {
   Future<bool> updateVehiculo(int id, Vehiculo vehiculo, {File? foto}) async {
     final token = await _getToken();
     try {
-      // Esta ruta no actualiza cantidad de ruedas segun el comportamiento actual.
-      final Map<String, dynamic> editMap = {
+      // 1. EDITAR DATOS (Ruta: /vehiculos/editar)
+      // Nota: Esta ruta no acepta cantidadRuedas según tu Swagger
+      Map<String, dynamic> editMap = {
         'id': id,
         'placa': vehiculo.placa,
         'chasis': vehiculo.chasis,
@@ -94,8 +93,9 @@ class VehiculoService {
         ),
       );
 
+      // 2. EDITAR FOTO (Si el usuario seleccionó una nueva)
       if (foto != null) {
-        final FormData photoData = FormData.fromMap({
+        FormData photoData = FormData.fromMap({
           'datax': jsonEncode({'id': id}),
           'foto': await MultipartFile.fromFile(
             foto.path,
@@ -114,6 +114,25 @@ class VehiculoService {
     } catch (e) {
       print("Error editando: $e");
       return false;
+    }
+  }
+
+  static Future<Map<String, dynamic>?> getDetalle(
+      String token, int vehiculoId) async {
+    final url = Uri.parse("$baseUrl/vehiculos/detalle?id=$vehiculoId");
+
+    final response = await http.get(
+      url,
+      headers: {
+        "Authorization": "Bearer $token",
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      print(response.body);
+      return null;
     }
   }
 }

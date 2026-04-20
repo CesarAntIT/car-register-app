@@ -44,6 +44,7 @@ dependencies:
   flutter_html_iframe: ^3.0.0
   youtube_player_iframe: ^5.2.2
   carousel_slider: ^5.1.2
+  http: ^1.6.0
 
 dev_dependencies:
   flutter_test:

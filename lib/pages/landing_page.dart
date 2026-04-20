@@ -1,3 +1,4 @@
+import 'package:car_api_final_app/pages/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -81,13 +82,17 @@ class LandingPage extends StatelessWidget {
                   title: 'Mi Perfil',
                   icon: Icons.build_circle_outlined,
                   color: Colors.deepOrange,
+                  changePage: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginPage()),
+                  ),
                 ),
                 AccessCard(
                   title: 'Mis Vehiculos',
                   icon: Icons.directions_car_filled_outlined,
                   color: isDark ? Colors.deepOrange : Colors.deepOrange,
                   targetIndex: 2,
-                  changePage: onCardPressed,
+                  changePage: () => onCardPressed(2),
                 ),
               ],
             ),
@@ -98,7 +103,7 @@ class LandingPage extends StatelessWidget {
                 icon: Icons.no_accounts,
                 color: isDark ? Colors.deepOrange : Colors.deepOrange,
                 targetIndex: 1,
-                changePage: onCardPressed,
+                changePage: () => onCardPressed(1),
               ),
             ),
             Padding(
@@ -108,7 +113,7 @@ class LandingPage extends StatelessWidget {
                 icon: Icons.info_outline,
                 color: isDark ? Colors.deepOrange : Colors.deepOrange,
                 targetIndex: 3,
-                changePage: onCardPressed,
+                changePage: () => onCardPressed(3),
               ),
             ),
             const SizedBox(height: 25),
@@ -182,7 +187,7 @@ class AccessCard extends StatelessWidget {
   final String title;
   final IconData icon;
   final Color color;
-  final Function(int)? changePage;
+  final VoidCallback? changePage;
   final int? targetIndex;
 
   @override
@@ -190,7 +195,11 @@ class AccessCard extends StatelessWidget {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       child: InkWell(
-        onTap: () => changePage?.call(targetIndex!),
+        onTap: () {
+          if (changePage != null) {
+            changePage!();
+          }
+        },
         borderRadius: BorderRadius.circular(15),
         child: Padding(
           padding: const EdgeInsets.all(8.0),

@@ -27,6 +27,12 @@ class _MainAppNavigationState extends State<MainAppNavigation> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _pageIndex = 0;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -46,7 +52,10 @@ class _MainAppNavigationState extends State<MainAppNavigation> {
           ),
         ),
         actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.account_circle)),
+          IconButton(
+            onPressed: () => Navigator.pushNamed(context, '/perfil'),
+            icon: const Icon(Icons.account_circle),
+          ),
         ],
       ),
       drawer: NavigationDrawer(
@@ -91,11 +100,9 @@ class _MainAppNavigationState extends State<MainAppNavigation> {
 
       body: [
         LandingPage(
-          onCardPressed: (index) {
-            setState(() {
-              _pageIndex = index;
-            });
-          },
+          onCardPressed: (index) => setState(() {
+            _pageIndex = index;
+          }),
         ),
         MainScaffold(),
         CatalogoVehiculosScreen(),

@@ -1,0 +1,134 @@
+import 'package:car_api_final_app/pages/login_page.dart';
+import 'package:car_api_final_app/services/http_service.dart';
+import 'package:flutter/material.dart';
+import '../services/profile_service.dart';
+
+class ProfilePage extends StatefulWidget {
+  const ProfilePage({super.key});
+
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  Map<String, dynamic>? profile;
+  late String token;
+
+  @override
+  void initState() {
+    super.initState();
+    loadProfile();
+  }
+
+  void loadProfile() async {
+    token = await HttpService.getToken() ?? "";
+    final data = await ProfileService.getProfile(token);
+    setState(() => profile = data);
+  }
+
+  void _logout() async {
+    await ProfileService.logout();
+    if (mounted) {
+      Navigator.of(context).pushNamedAndRemoveUntil(
+        '/', // The name of your new route
+        (Route<dynamic> route) => false, // This condition deletes everything
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (profile == null) {
+      return Scaffold(
+        appBar: AppBar(title: const Text("Perfil")),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(),
+              SizedBox(height: 50),
+              Text("No aparece tu perfil?"),
+              TextButton(
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginPage()),
+                ),
+                child: Text("Inicia Sesión !!"),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    final user = profile!["data"];
+
+    return Scaffold(
+      appBar: AppBar(title: const Text("Perfil")),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            // FOTO
+            CircleAvatar(
+              radius: 50,
+              backgroundImage:
+                  user["fotoUrl"] != null &&
+                      user["fotoUrl"].toString().isNotEmpty
+                  ? NetworkImage(user["fotoUrl"])
+                  : null,
+              child:
+                  user["fotoUrl"] == null || user["fotoUrl"].toString().isEmpty
+                  ? const Icon(Icons.person, size: 50)
+                  : null,
+            ),
+            const SizedBox(height: 15),
+            // NOMBRE
+            Text(
+              "${user["nombre"]} ${user["apellido"]}",
+              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 5),
+            Text(
+              user["correo"] ?? "",
+              style: const TextStyle(color: Colors.grey),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 20),
+            // 🔥 TARJETAS
+            Card(
+              child: ListTile(
+                leading: const Icon(Icons.badge),
+                title: const Text("Matrícula"),
+                subtitle: Text(user["matricula"] ?? ""),
+              ),
+            ),
+            Card(
+              child: ListTile(
+                leading: const Icon(Icons.group),
+                title: const Text("Grupo"),
+                subtitle: Text(user["grupo"] ?? "N/A"),
+              ),
+            ),
+            Card(
+              child: ListTile(
+                leading: const Icon(Icons.security),
+                title: const Text("Rol"),
+                subtitle: Text(user["rol"] ?? "Usuario"),
+              ),
+            ),
+
+            const SizedBox(height: 25),
+            ElevatedButton.icon(
+              onPressed: () => _logout(),
+              icon: Icon(Icons.logout),
+              label: Text("Salir de la Sesión"),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

@@ -3,10 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:car_api_final_app/services/dotenv_service.dart';
 import 'package:car_api_final_app/pages/combustible_list_page.dart';
 import 'package:car_api_final_app/pages/combustible_registro_page.dart';
+import 'package:car_api_final_app/pages/finanzas_page.dart';
 import 'package:car_api_final_app/pages/foro_crear_tema_page.dart';
 import 'package:car_api_final_app/pages/foro_lista_page.dart';
 import 'package:car_api_final_app/pages/foro_detalle_page.dart';
 import 'package:car_api_final_app/pages/foro_mis_temas_page.dart';
+import 'package:car_api_final_app/pages/gasto_registro_page.dart';
+import 'package:car_api_final_app/pages/goma_pinchazo_registro_page.dart';
+import 'package:car_api_final_app/pages/gomas_page.dart';
+import 'package:car_api_final_app/pages/ingreso_registro_page.dart';
 import 'package:car_api_final_app/pages/mantenimientos_page.dart';
 import 'package:car_api_final_app/pages/mantenimiento_crear_page.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -47,6 +52,31 @@ class _MyAppState extends State<MyApp> {
         '/combustible/registro': (context) {
           final vehiculoId = ModalRoute.of(context)!.settings.arguments as int;
           return CombustibleRegistroPage(vehiculoId: vehiculoId);
+        },
+        '/gomas': (context) {
+          final vehiculoId = ModalRoute.of(context)!.settings.arguments as int;
+          return GomasPage(vehiculoId: vehiculoId);
+        },
+        '/gomas/pinchazo': (context) {
+          final args = ModalRoute.of(context)!.settings.arguments
+              as Map<String, dynamic>;
+          return GomaPinchazoRegistroPage(
+            vehiculoId: args['vehiculoId'] as int,
+            gomaId: args['gomaId'] as int,
+            posicion: (args['posicion'] ?? 'Sin posicion').toString(),
+          );
+        },
+        '/finanzas': (context) {
+          final vehiculoId = ModalRoute.of(context)!.settings.arguments as int;
+          return FinanzasPage(vehiculoId: vehiculoId);
+        },
+        '/finanzas/gasto': (context) {
+          final vehiculoId = ModalRoute.of(context)!.settings.arguments as int;
+          return GastoRegistroPage(vehiculoId: vehiculoId);
+        },
+        '/finanzas/ingreso': (context) {
+          final vehiculoId = ModalRoute.of(context)!.settings.arguments as int;
+          return IngresoRegistroPage(vehiculoId: vehiculoId);
         },
 
         '/mantenimiento': (context) {

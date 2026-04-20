@@ -1,5 +1,6 @@
 import 'package:car_api_final_app/models/combustible_model.dart';
 import 'package:car_api_final_app/services/http_service.dart';
+import 'package:car_api_final_app/utils/format_utils.dart';
 import 'package:flutter/material.dart';
 
 class CombustibleListPage extends StatefulWidget {
@@ -90,7 +91,7 @@ class _CombustibleListPageState extends State<CombustibleListPage> {
                     ),
                     subtitle: Text("${r.cantidad} ${r.unidad}  •  ${r.fecha}"),
                     trailing: Text(
-                      "RD\$ ${r.monto.toStringAsFixed(2)}",
+                      "RD\$ ${FormatUtils.currency(r.monto)}",
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.deepOrange,

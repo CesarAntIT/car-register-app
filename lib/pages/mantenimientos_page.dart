@@ -1,5 +1,6 @@
 import 'package:car_api_final_app/models/mantenimiento_model.dart';
 import 'package:car_api_final_app/services/http_service.dart';
+import 'package:car_api_final_app/utils/format_utils.dart';
 import 'package:flutter/material.dart';
 
 class MantenimientoPage extends StatefulWidget {
@@ -98,7 +99,7 @@ class _MantenimientoPageState extends State<MantenimientoPage> {
               _detalleItem(
                 Icons.attach_money,
                 'Costo',
-                'RD\$ ${m.costo.toStringAsFixed(2)}',
+                'RD\$ ${FormatUtils.currency(m.costo)}',
               ),
               _detalleItem(Icons.calendar_today, 'Fecha', m.fecha),
               const SizedBox(height: 16),
@@ -298,7 +299,7 @@ class _MantenimientoPageState extends State<MantenimientoPage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    'RD\$ ${m.costo.toStringAsFixed(2)}',
+                                    'RD\$ ${FormatUtils.currency(m.costo)}',
                                     style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: Colors.deepOrange,

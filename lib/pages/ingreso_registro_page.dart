@@ -110,6 +110,7 @@ class _IngresoRegistroPageState extends State<IngresoRegistroPage> {
                 ),
                 decoration: const InputDecoration(
                   labelText: 'Monto (RD\$)',
+                  hintText: 'Ingresa el monto en pesos dominicanos (RD\$)',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.attach_money),
                 ),

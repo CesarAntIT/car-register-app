@@ -24,11 +24,15 @@ class DevAboutItem extends StatelessWidget {
           mainAxisSize: MainAxisSize.min, // Essential for use inside ListViews
           children: [
             // Developer Image / Placeholder
-            const SizedBox(
-              height: 100,
-              width: 100,
-              child:
-                  Placeholder(), // Replace with Image.file or CircleAvatar later
+            Container(
+              height: 150,
+              width: 150,
+              child: dev.imageFile.isNotEmpty
+                  ? ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Image.asset(dev.imageFile, fit: BoxFit.cover),
+                    )
+                  : CircleAvatar(child: Icon(Icons.account_circle, size: 50)),
             ),
             const SizedBox(height: 10),
 

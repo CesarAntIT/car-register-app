@@ -38,42 +38,65 @@ class _CareVideoPageState extends State<CareVideoPage> {
         Container(
           color: Colors.transparent,
           height: 40,
-          child: ListView(
+          child: SingleChildScrollView(
             scrollDirection: Axis.horizontal,
-
             padding: EdgeInsets.all(5),
-            children: [
-              ElevatedButton(
-                onPressed: () => setState(() {
-                  _filter = _filterOptions.first;
-                }),
-                child: Text("Todas"),
-              ),
-              ElevatedButton(
-                onPressed: () => setState(() {
-                  _filter = _filterOptions[1];
-                }),
-                child: Text("Mantenimiento"),
-              ),
-              ElevatedButton(
-                onPressed: () => setState(() {
-                  _filter = _filterOptions[2];
-                }),
-                child: Text("Mantenimiento General"),
-              ),
-              ElevatedButton(
-                onPressed: () => setState(() {
-                  _filter = _filterOptions[3];
-                }),
-                child: Text("Recomendaciones"),
-              ),
-              ElevatedButton(
-                onPressed: () => setState(() {
-                  _filter = _filterOptions.last;
-                }),
-                child: Text("Misc."),
-              ),
-            ],
+            child: Row(
+              children: _filterOptions.map((t) {
+                final seleccionado =
+                    (t == 'todo' && _filter == null) || t == _filter;
+                return Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: FilterChip(
+                    label: Text(t.toUpperCase()),
+                    selected: seleccionado,
+                    selectedColor: Colors.deepOrange,
+                    labelStyle: TextStyle(
+                      color: seleccionado ? Colors.white : null,
+                      fontWeight: seleccionado
+                          ? FontWeight.bold
+                          : FontWeight.normal,
+                    ),
+                    onSelected: (_) {
+                      setState(() {
+                        _filter = t;
+                      });
+                    },
+                  ),
+                );
+              }).toList(),
+            ),
+
+            // ElevatedButton(
+            //   onPressed: () => setState(() {
+            //     _filter = _filterOptions.first;
+            //   }),
+            //   child: Text("Todas"),
+            // ),
+            // ElevatedButton(
+            //   onPressed: () => setState(() {
+            //     _filter = _filterOptions[1];
+            //   }),
+            //   child: Text("Mantenimiento"),
+            // ),
+            // ElevatedButton(
+            //   onPressed: () => setState(() {
+            //     _filter = _filterOptions[2];
+            //   }),
+            //   child: Text("Mantenimiento General"),
+            // ),
+            // ElevatedButton(
+            //   onPressed: () => setState(() {
+            //     _filter = _filterOptions[3];
+            //   }),
+            //   child: Text("Recomendaciones"),
+            // ),
+            // ElevatedButton(
+            //   onPressed: () => setState(() {
+            //     _filter = _filterOptions.last;
+            //   }),
+            //   child: Text("Misc."),
+            // ),
           ),
         ),
         FutureBuilder(

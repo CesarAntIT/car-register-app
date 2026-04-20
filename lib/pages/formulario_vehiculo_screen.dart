@@ -266,9 +266,10 @@ class _FormularioVehiculoScreenState extends State<FormularioVehiculoScreen> {
               if (widget.vehiculo != null)
                 Column(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    Wrap(
+                      alignment: WrapAlignment.center,
                       spacing: 10,
+                      runSpacing: 10,
                       children: [
                         ElevatedButton.icon(
                           onPressed: () async {
@@ -285,12 +286,34 @@ class _FormularioVehiculoScreenState extends State<FormularioVehiculoScreen> {
                           onPressed: () async {
                             await Navigator.pushNamed(
                               context,
+                              '/gomas',
+                              arguments: widget.vehiculo!.id,
+                            );
+                          },
+                          label: Text("Gomas"),
+                          icon: Icon(Icons.tire_repair),
+                        ),
+                        ElevatedButton.icon(
+                          onPressed: () async {
+                            await Navigator.pushNamed(
+                              context,
                               '/mantenimiento',
                               arguments: widget.vehiculo!.id,
                             );
                           },
                           label: Text("Mantenimiento"),
                           icon: Icon(Icons.build),
+                        ),
+                        ElevatedButton.icon(
+                          onPressed: () async {
+                            await Navigator.pushNamed(
+                              context,
+                              '/finanzas',
+                              arguments: widget.vehiculo!.id,
+                            );
+                          },
+                          label: Text("Finanzas"),
+                          icon: Icon(Icons.account_balance_wallet),
                         ),
                       ],
                     ),

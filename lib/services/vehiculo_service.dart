@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:car_api_final_app/models/vehiculo_model.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -35,17 +36,20 @@ class VehiculoService {
   Future<bool> createVehiculo(Vehiculo vehiculo, {File? foto}) async {
     final token = await _getToken();
     try {
-      // Para CREAR, la API sí acepta cantidadRuedas y foto en un solo multipart
-      Map<String, dynamic> dataMap = {
+      final Map<String, dynamic> dataMap = {
         'placa': vehiculo.placa,
         'chasis': vehiculo.chasis,
         'marca': vehiculo.marca,
         'modelo': vehiculo.modelo,
         'anio': vehiculo.anio,
-        'cantidadRuedas': vehiculo.cantidadRuedas, // Se envía como número
+        // Enviamos ambas variantes para no romper compatibilidad con backend.
+        'cantidadRuedas': vehiculo.cantidadRuedas,
+        'cantidad_ruedas': vehiculo.cantidadRuedas,
       };
 
-      FormData formData = FormData.fromMap({'datax': jsonEncode(dataMap)});
+      final FormData formData = FormData.fromMap({
+        'datax': jsonEncode(dataMap),
+      });
 
       if (foto != null) {
         formData.files.add(
@@ -71,9 +75,8 @@ class VehiculoService {
   Future<bool> updateVehiculo(int id, Vehiculo vehiculo, {File? foto}) async {
     final token = await _getToken();
     try {
-      // 1. EDITAR DATOS (Ruta: /vehiculos/editar)
-      // Nota: Esta ruta no acepta cantidadRuedas según tu Swagger
-      Map<String, dynamic> editMap = {
+      // Esta ruta no actualiza cantidad de ruedas segun el comportamiento actual.
+      final Map<String, dynamic> editMap = {
         'id': id,
         'placa': vehiculo.placa,
         'chasis': vehiculo.chasis,
@@ -91,9 +94,8 @@ class VehiculoService {
         ),
       );
 
-      // 2. EDITAR FOTO (Si el usuario seleccionó una nueva)
       if (foto != null) {
-        FormData photoData = FormData.fromMap({
+        final FormData photoData = FormData.fromMap({
           'datax': jsonEncode({'id': id}),
           'foto': await MultipartFile.fromFile(
             foto.path,

@@ -124,7 +124,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 10),
 
-                // 🔥 RECUPERAR CONTRASEÑA
+                // RECUPERAR CONTRASEÑA
                 TextButton(
                   onPressed: recuperarClave,
                   child: const Text("¿Olvidaste tu contraseña?"),

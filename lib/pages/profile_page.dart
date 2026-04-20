@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../services/profile_service.dart';
+import 'resumen_page.dart';
 
 class ProfilePage extends StatefulWidget {
   final String token;
@@ -39,8 +40,9 @@ class _ProfilePageState extends State<ProfilePage> {
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // 🔥 FOTO
+            // FOTO
             CircleAvatar(
               radius: 50,
               backgroundImage: user["fotoUrl"] != null &&
@@ -55,13 +57,14 @@ class _ProfilePageState extends State<ProfilePage> {
 
             const SizedBox(height: 15),
 
-            // 🔥 NOMBRE
+            // NOMBRE
             Text(
               "${user["nombre"]} ${user["apellido"]}",
               style: const TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
               ),
+              textAlign: TextAlign.center,
             ),
 
             const SizedBox(height: 5),
@@ -69,6 +72,7 @@ class _ProfilePageState extends State<ProfilePage> {
             Text(
               user["correo"] ?? "",
               style: const TextStyle(color: Colors.grey),
+              textAlign: TextAlign.center,
             ),
 
             const SizedBox(height: 20),
@@ -95,6 +99,28 @@ class _ProfilePageState extends State<ProfilePage> {
                 leading: const Icon(Icons.security),
                 title: const Text("Rol"),
                 subtitle: Text(user["rol"] ?? "Usuario"),
+              ),
+            ),
+
+            const SizedBox(height: 25),
+
+            // BOTÓN RESUMEN FINANCIERO
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton.icon(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ResumenPage(
+                        token: widget.token,
+                        vehiculoId: 1,
+                      ),
+                    ),
+                  );
+                },
+                icon: const Icon(Icons.bar_chart),
+                label: const Text("Ver Resumen Financiero"),
               ),
             ),
           ],

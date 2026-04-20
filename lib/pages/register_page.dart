@@ -60,7 +60,6 @@ class _RegisterPageState extends State<RegisterPage> {
         },
       );
 
-      // luego vas a activación
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Error en registro")),

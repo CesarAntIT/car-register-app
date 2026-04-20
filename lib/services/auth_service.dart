@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 class AuthService {
   static const String baseUrl = "https://taller-itla.ia3x.com/api";
 
-  // 🔹 LOGIN
+  // LOGIN
   static Future<Map<String, dynamic>?> login(
       String matricula, String contrasena) async {
     final url = Uri.parse("$baseUrl/auth/login");
@@ -71,7 +71,7 @@ class AuthService {
     return response.statusCode == 200;
   }
 
-  // 🔹 RECUPERAR CONTRASEÑA (CORREGIDO)
+  // RECUPERAR CONTRASEÑA
   static Future<bool> recuperarClave(String matricula) async {
     final url = Uri.parse("$baseUrl/auth/olvidar");
 

@@ -1,15 +1,11 @@
+import 'package:car_api_final_app/services/http_service.dart';
 import 'package:flutter/material.dart';
 import '../services/vehiculo_service.dart';
 
 class ResumenPage extends StatefulWidget {
-  final String token;
   final int vehiculoId;
 
-  const ResumenPage({
-    super.key,
-    required this.token,
-    required this.vehiculoId,
-  });
+  const ResumenPage({super.key, required this.vehiculoId});
 
   @override
   State<ResumenPage> createState() => _ResumenPageState();
@@ -25,8 +21,8 @@ class _ResumenPageState extends State<ResumenPage> {
   }
 
   void loadResumen() async {
-    final data =
-    await VehiculoService.getDetalle(widget.token, widget.vehiculoId);
+    final token = await HttpService.getToken() ?? "";
+    final data = await VehiculoService.getDetalle(token, widget.vehiculoId);
 
     setState(() {
       resumen = data?["data"]?["resumen"];
@@ -35,19 +31,14 @@ class _ResumenPageState extends State<ResumenPage> {
 
   Widget item(String title, dynamic value) {
     return Card(
-      child: ListTile(
-        title: Text(title),
-        trailing: Text(value.toString()),
-      ),
+      child: ListTile(title: Text(title), trailing: Text(value.toString())),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     if (resumen == null) {
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
     return Scaffold(
@@ -60,6 +51,28 @@ class _ResumenPageState extends State<ResumenPage> {
             item("Total Ingresos", resumen!["totalIngresos"]),
             item("Total Invertido", resumen!["totalInvertido"]),
             item("Balance", resumen!["balance"]),
+            ElevatedButton.icon(
+              onPressed: () async {
+                await Navigator.pushNamed(
+                  context,
+                  '/combustible',
+                  arguments: widget.vehiculoId,
+                );
+              },
+              label: Text("Combustibles"),
+              icon: Icon(Icons.local_gas_station),
+            ),
+            ElevatedButton.icon(
+              onPressed: () async {
+                await Navigator.pushNamed(
+                  context,
+                  '/mantenimiento',
+                  arguments: widget.vehiculoId,
+                );
+              },
+              label: Text("Mantenimiento"),
+              icon: Icon(Icons.build),
+            ),
           ],
         ),
       ),

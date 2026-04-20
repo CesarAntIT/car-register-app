@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../services/auth_service.dart';
 import 'register_page.dart';
 import 'profile_page.dart';
@@ -37,20 +39,20 @@ class _LoginPageState extends State<LoginPage> {
       String nombre = result["data"]["nombre"];
       String token = result["data"]["token"];
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Bienvenido $nombre")),
-      );
-
-      Navigator.push(
+      ScaffoldMessenger.of(
         context,
-        MaterialPageRoute(
-          builder: (context) => ProfilePage(token: token),
-        ),
-      );
+      ).showSnackBar(SnackBar(content: Text("Bienvenido $nombre")));
+
+      final refs = await SharedPreferences.getInstance();
+      refs.setString('TOKEN', token);
+
+      if (mounted) {
+        Navigator.pop(context);
+      }
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Credenciales incorrectas")),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("Credenciales incorrectas")));
     }
   }
 
@@ -58,22 +60,22 @@ class _LoginPageState extends State<LoginPage> {
     String matricula = matriculaController.text;
 
     if (matricula.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Ingresa tu matrícula")),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("Ingresa tu matrícula")));
       return;
     }
 
     bool ok = await AuthService.recuperarClave(matricula);
 
     if (ok) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Clave temporal: 123456")),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("Clave temporal: 123456")));
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Error al recuperar clave")),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("Error al recuperar clave")));
     }
   }
 
@@ -83,70 +85,83 @@ class _LoginPageState extends State<LoginPage> {
       appBar: AppBar(title: const Text("Login")),
       body: Padding(
         padding: const EdgeInsets.all(20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              "AUTOZONE",
-              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 30),
-
-            TextField(
-              controller: matriculaController,
-              decoration: const InputDecoration(
-                labelText: "Matrícula",
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 15),
-
-            TextField(
-              controller: passwordController,
-              obscureText: true,
-              decoration: const InputDecoration(
-                labelText: "Contraseña",
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 20),
-
-            isLoading
-                ? const CircularProgressIndicator()
-                : Column(
-              children: [
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: login,
-                    child: const Text("Iniciar Sesión"),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text.rich(
+                TextSpan(
+                  text: "AUTOZONE",
+                  style: GoogleFonts.sairaStencilOne(
+                    fontStyle: FontStyle.italic,
                   ),
+                  children: const [
+                    TextSpan(
+                      text: "\nItla Vehicle Management\n",
+                      style: TextStyle(fontSize: 15),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 10),
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 50),
+              ),
+              const SizedBox(height: 30),
 
-                // RECUPERAR CONTRASEÑA
-                TextButton(
-                  onPressed: recuperarClave,
-                  child: const Text("¿Olvidaste tu contraseña?"),
+              TextField(
+                controller: matriculaController,
+                decoration: const InputDecoration(
+                  labelText: "Matrícula",
+                  border: OutlineInputBorder(),
                 ),
+              ),
+              const SizedBox(height: 15),
 
-                const SizedBox(height: 10),
-
-                TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                        const RegisterPage(),
-                      ),
-                    );
-                  },
-                  child: const Text("¿No tienes cuenta? Regístrate"),
+              TextField(
+                controller: passwordController,
+                obscureText: true,
+                decoration: const InputDecoration(
+                  labelText: "Contraseña",
+                  border: OutlineInputBorder(),
                 ),
-              ],
-            ),
-          ],
+              ),
+              const SizedBox(height: 20),
+
+              isLoading
+                  ? const CircularProgressIndicator()
+                  : Column(
+                      children: [
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: login,
+                            child: const Text("Iniciar Sesión"),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+
+                        // RECUPERAR CONTRASEÑA
+                        TextButton(
+                          onPressed: recuperarClave,
+                          child: const Text("¿Olvidaste tu contraseña?"),
+                        ),
+
+                        const SizedBox(height: 10),
+
+                        TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const RegisterPage(),
+                              ),
+                            );
+                          },
+                          child: const Text("¿No tienes cuenta? Regístrate"),
+                        ),
+                      ],
+                    ),
+            ],
+          ),
         ),
       ),
     );

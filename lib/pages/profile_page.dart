@@ -1,11 +1,10 @@
+import 'package:car_api_final_app/services/http_service.dart';
 import 'package:flutter/material.dart';
 import '../services/profile_service.dart';
 import 'resumen_page.dart';
 
 class ProfilePage extends StatefulWidget {
-  final String token;
-
-  const ProfilePage({super.key, required this.token});
+  const ProfilePage({super.key});
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -13,6 +12,7 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   Map<String, dynamic>? profile;
+  late String token;
 
   @override
   void initState() {
@@ -21,16 +21,15 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   void loadProfile() async {
-    final data = await ProfileService.getProfile(widget.token);
+    token = await HttpService.getToken() ?? "";
+    final data = await ProfileService.getProfile(token);
     setState(() => profile = data);
   }
 
   @override
   Widget build(BuildContext context) {
     if (profile == null) {
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
     final user = profile!["data"];
@@ -45,12 +44,13 @@ class _ProfilePageState extends State<ProfilePage> {
             // FOTO
             CircleAvatar(
               radius: 50,
-              backgroundImage: user["fotoUrl"] != null &&
-                  user["fotoUrl"].toString().isNotEmpty
+              backgroundImage:
+                  user["fotoUrl"] != null &&
+                      user["fotoUrl"].toString().isNotEmpty
                   ? NetworkImage(user["fotoUrl"])
                   : null,
-              child: user["fotoUrl"] == null ||
-                  user["fotoUrl"].toString().isEmpty
+              child:
+                  user["fotoUrl"] == null || user["fotoUrl"].toString().isEmpty
                   ? const Icon(Icons.person, size: 50)
                   : null,
             ),
@@ -60,10 +60,7 @@ class _ProfilePageState extends State<ProfilePage> {
             // NOMBRE
             Text(
               "${user["nombre"]} ${user["apellido"]}",
-              style: const TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-              ),
+              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
 
@@ -103,26 +100,6 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
 
             const SizedBox(height: 25),
-
-            // BOTÓN RESUMEN FINANCIERO
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton.icon(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ResumenPage(
-                        token: widget.token,
-                        vehiculoId: 1,
-                      ),
-                    ),
-                  );
-                },
-                icon: const Icon(Icons.bar_chart),
-                label: const Text("Ver Resumen Financiero"),
-              ),
-            ),
           ],
         ),
       ),

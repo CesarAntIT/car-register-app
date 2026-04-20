@@ -13,8 +13,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController matriculaController = TextEditingController();
 
   void register() async {
-    final result =
-    await AuthService.registro(matriculaController.text);
+    final result = await AuthService.registro(matriculaController.text);
 
     if (result != null) {
       String token = result["data"]["token"];
@@ -38,7 +37,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   );
                 },
                 child: const Text("Continuar"),
-              )
+              ),
             ],
           );
         },
@@ -54,16 +53,15 @@ class _RegisterPageState extends State<RegisterPage> {
               TextButton(
                 onPressed: () => Navigator.pop(context),
                 child: const Text("OK"),
-              )
+              ),
             ],
           );
         },
       );
-
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Error en registro")),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("Error en registro")));
     }
   }
 
@@ -74,17 +72,25 @@ class _RegisterPageState extends State<RegisterPage> {
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Text(
+              "Ingresa tus datos para registrarte!!",
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            SizedBox(height: 10),
             TextField(
               controller: matriculaController,
               decoration: const InputDecoration(
                 labelText: "Matrícula",
+                border: OutlineInputBorder(),
               ),
             ),
+            SizedBox(height: 10,),
             ElevatedButton(
               onPressed: register,
               child: const Text("Registrarse"),
-            )
+            ),
           ],
         ),
       ),

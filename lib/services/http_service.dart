@@ -95,14 +95,10 @@ class HttpService {
 
   //Consigue la lista de noticias actuales
   static Future<List<Noticia>> getListaNoticias() async {
-    final token = await getToken();
-
     try {
       final res = await _dio.get(
-        '/noticias',
-        options: Options(
-          headers: _authHeaders(token),
-        ),
+        '/publico/noticias',
+        options: Options(headers: {'Accept': 'application/json'}),
       );
 
       //Only converts API data if it is true
@@ -233,14 +229,10 @@ class HttpService {
 
   // Lista de temas del foro
   static Future<Map<String, dynamic>> getListaTemasForo({int page = 1}) async {
-    final token = await getToken();
     try {
       final res = await _dio.get(
-        '/foro/temas',
-        queryParameters: {'page': page, 'limit': 20},
-        options: Options(
-          headers: _authHeaders(token),
-        ),
+        '/publico/foro',
+        queryParameters: {'page': page, 'limit': 50},
       );
       if (res.data['success'] == true) return res.data;
     } on DioException catch (e) {
@@ -251,14 +243,11 @@ class HttpService {
 
   // Detalle de tema con respuestas
   static Future<Map<String, dynamic>?> getDetalleTema(int id) async {
-    final token = await getToken();
     try {
       final res = await _dio.get(
-        '/foro/detalle',
+        '/publico/foro/detalle',
         queryParameters: {'id': id},
-        options: Options(
-          headers: _authHeaders(token),
-        ),
+        options: Options(headers: {'Accept': 'application/json'}),
       );
       if (res.data['success'] == true) return res.data['data'];
     } on DioException catch (e) {
@@ -307,16 +296,10 @@ class HttpService {
   }
 
   static Future<List<CareVideo>> getVideos() async {
-    final token = await getToken();
     try {
       final res = await _dio.get(
-        '/videos',
-        options: Options(
-          headers: {
-            'Acccept': 'application/json',
-            ..._authHeaders(token),
-          },
-        ),
+        '/publico/videos',
+        options: Options(headers: {'Acccept': 'application/json'}),
       );
 
       if (res.data['success'] == true) {

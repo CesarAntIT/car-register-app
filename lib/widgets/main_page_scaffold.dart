@@ -55,7 +55,6 @@ class _MainScaffoldState extends State<MainScaffold> {
         controller: _pageController,
         onPageChanged: _changePage,
         children: [
-          Container(color: Colors.red),
           CareVideoPage(),
           const CatalogoVehiculosScreen(),
           const NewsListPage(),
@@ -92,7 +91,6 @@ class _MainScaffoldState extends State<MainScaffold> {
           );
         },
         items: const [
-          BottomNavigationBarItem(label: "Inicio", icon: Icon(Icons.home)),
           BottomNavigationBarItem(
             label: "Videos",
             icon: Icon(Icons.play_arrow),

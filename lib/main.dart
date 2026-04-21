@@ -60,8 +60,9 @@ class _MyAppState extends State<MyApp> {
           return GomasPage(vehiculoId: vehiculoId);
         },
         '/gomas/pinchazo': (context) {
-          final args = ModalRoute.of(context)!.settings.arguments
-              as Map<String, dynamic>;
+          final args =
+              ModalRoute.of(context)!.settings.arguments
+                  as Map<String, dynamic>;
           return GomaPinchazoRegistroPage(
             vehiculoId: args['vehiculoId'] as int,
             gomaId: args['gomaId'] as int,

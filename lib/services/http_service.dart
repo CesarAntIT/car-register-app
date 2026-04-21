@@ -1,4 +1,5 @@
 import 'package:car_api_final_app/models/care_video_model.dart';
+import 'package:car_api_final_app/models/catalogo_models.dart';
 import 'package:car_api_final_app/models/gasto_categoria_model.dart';
 import 'package:car_api_final_app/models/goma_model.dart';
 import 'package:car_api_final_app/models/noticia_model.dart';
@@ -11,18 +12,15 @@ import 'dart:convert';
 import 'package:car_api_final_app/models/combustible_model.dart';
 
 class HttpService {
-  //TODO: Add all of the Functions to use the API
   static final _dio = Dio(
     BaseOptions(baseUrl: "https://taller-itla.ia3x.com/api"),
   );
 
   static Map<String, String> _authHeaders(String? token) {
-    return {
-      'Authorization': 'Bearer $token',
-      'Accept': 'application/json',
-    };
+    return {'Authorization': 'Bearer $token', 'Accept': 'application/json'};
   }
 
+  //[UTILIDADES]
   static int? _toInt(dynamic value) {
     if (value == null) return null;
     if (value is int) return value;
@@ -38,7 +36,10 @@ class HttpService {
 
     if (direct is Map<String, dynamic>) {
       final nested =
-          direct['data'] ?? direct['items'] ?? direct['rows'] ?? direct['results'];
+          direct['data'] ??
+          direct['items'] ??
+          direct['rows'] ??
+          direct['results'];
       if (nested is List) return nested;
     }
 
@@ -77,7 +78,8 @@ class HttpService {
       if (hasMore is bool) return hasMore;
 
       final current =
-          _toInt(pagination['current_page'] ?? pagination['page']) ?? currentPage;
+          _toInt(pagination['current_page'] ?? pagination['page']) ??
+          currentPage;
       final last = _toInt(pagination['last_page'] ?? pagination['total_pages']);
       final nextPageUrl = pagination['next_page_url'];
 
@@ -88,11 +90,13 @@ class HttpService {
     return fetchedCount >= 20;
   }
 
+  //Permite conseguir el token almacenado en la memoria del dispositivo
   static Future<String?> getToken() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString('TOKEN');
   }
 
+  //[PETICIONES PARA LA LISTA DE NOTICIAS]
   //Consigue la lista de noticias actuales
   static Future<List<Noticia>> getListaNoticias() async {
     try {
@@ -120,9 +124,7 @@ class HttpService {
       final res = await _dio.get(
         '/noticias/detalle',
         queryParameters: {'id': '$id'},
-        options: Options(
-          headers: _authHeaders(token),
-        ),
+        options: Options(headers: _authHeaders(token)),
       );
 
       if (res.data['success'] == true) {
@@ -135,6 +137,43 @@ class HttpService {
     return null;
   }
 
+  //[PETICIONES PARA EL CATALOGO DE VEHICULOS]
+  static Future<List<Catalogo>> listarCatalogo() async {
+    try {
+      final res = await _dio.get(
+        '/publico/vehiculos',
+        options: Options(headers: {'Accept': 'application/json'}),
+      );
+      if (res.data['success'] == true) {
+        final List<dynamic> data = res.data['data'];
+        return data
+            .map((item) => Catalogo.fromMap(item as Map<String, dynamic>))
+            .toList();
+      }
+    } on DioException catch (e) {
+      debugPrint("Dio Error: ${e.message}");
+    }
+    return [];
+  }
+
+  static Future<Catalogo?> detalleCatalogo(int id) async {
+    try {
+      final res = await _dio.get(
+        '/publico/vehiculos/detalle',
+        queryParameters: {'id': '$id'},
+        options: Options(headers: {'Accept': 'application/json'}),
+      );
+      if (res.statusCode == 200 && res.data['success'] == true) {
+        final dynamic data = res.data['data'];
+        return Catalogo.fromMap(data as Map<String, dynamic>);
+      }
+    } on DioException catch (e) {
+      debugPrint("Error en detalleCatalogo: $e");
+    }
+    return null;
+  }
+
+  //[PETICIONES PARA LOS COMBUSTIBLES DE VEHICULO]
   // Lista de registros de combustible/aceite
   static Future<List<Combustible>> getListaCombustibles(
     int vehiculoId, {
@@ -148,9 +187,7 @@ class HttpService {
           'vehiculo_id': vehiculoId,
           if (tipo != null) 'tipo': tipo,
         },
-        options: Options(
-          headers: _authHeaders(token),
-        ),
+        options: Options(headers: _authHeaders(token)),
       );
 
       if (res.data['success'] == true) {
@@ -198,6 +235,7 @@ class HttpService {
     return false;
   }
 
+  //[PETICIONES PARA FORO COMUNITARIO (PUBLICO Y LOGIN)]
   // Crear tema en el foro
   static Future<bool> crearTemaForo({
     required int vehiculoId,
@@ -295,6 +333,7 @@ class HttpService {
     return {};
   }
 
+  //[PETICIONES PARA VIDEOS EDUCATIVOS]
   static Future<List<CareVideo>> getVideos() async {
     try {
       final res = await _dio.get(
@@ -314,6 +353,7 @@ class HttpService {
     return [];
   }
 
+  //[PETICIONES PARA FORO DE MANTENIMIENTO]
   // Lista de mantenimientos de un vehículo
   static Future<List<Mantenimiento>> getListaMantenimientos(
     int vehiculoId, {
@@ -327,9 +367,7 @@ class HttpService {
           'vehiculo_id': vehiculoId,
           if (tipo != null) 'tipo': tipo,
         },
-        options: Options(
-          headers: _authHeaders(token),
-        ),
+        options: Options(headers: _authHeaders(token)),
       );
       if (res.data['success'] == true) {
         final List<dynamic> data = res.data['data'];
@@ -409,6 +447,7 @@ class HttpService {
     return false;
   }
 
+  //[PETICIONES PARA CAMBIO DE ESTADO DE GOMAS]
   static Future<List<Goma>> getListaGomas(int vehiculoId) async {
     final token = await getToken();
     try {
@@ -443,10 +482,7 @@ class HttpService {
       final res = await _dio.post(
         '/gomas/actualizar',
         data: {
-          'datax': json.encode({
-            'goma_id': gomaId,
-            'estado': estado,
-          }),
+          'datax': json.encode({'goma_id': gomaId, 'estado': estado}),
         },
         options: Options(
           contentType: Headers.formUrlEncodedContentType,
@@ -488,6 +524,7 @@ class HttpService {
     return false;
   }
 
+  //[PETICIONES PARA MANEJAR GASTOS Y INGRESOS]
   static Future<List<GastoCategoria>> getCategoriasGastos() async {
     final token = await getToken();
     try {
@@ -514,11 +551,7 @@ class HttpService {
     try {
       final res = await _dio.get(
         '/gastos',
-        queryParameters: {
-          'vehiculo_id': vehiculoId,
-          'page': page,
-          'limit': 20,
-        },
+        queryParameters: {'vehiculo_id': vehiculoId, 'page': page, 'limit': 20},
         options: Options(headers: _authHeaders(token)),
       );
 
@@ -526,9 +559,8 @@ class HttpService {
         final items = _extractItems(res.data)
             .whereType<Map>()
             .map(
-              (item) => MovimientoFinanciero.fromMap(
-                Map<String, dynamic>.from(item),
-              ),
+              (item) =>
+                  MovimientoFinanciero.fromMap(Map<String, dynamic>.from(item)),
             )
             .toList();
 
@@ -582,11 +614,7 @@ class HttpService {
     try {
       final res = await _dio.get(
         '/ingresos',
-        queryParameters: {
-          'vehiculo_id': vehiculoId,
-          'page': page,
-          'limit': 20,
-        },
+        queryParameters: {'vehiculo_id': vehiculoId, 'page': page, 'limit': 20},
         options: Options(headers: _authHeaders(token)),
       );
 
@@ -594,9 +622,8 @@ class HttpService {
         final items = _extractItems(res.data)
             .whereType<Map>()
             .map(
-              (item) => MovimientoFinanciero.fromMap(
-                Map<String, dynamic>.from(item),
-              ),
+              (item) =>
+                  MovimientoFinanciero.fromMap(Map<String, dynamic>.from(item)),
             )
             .toList();
 

@@ -2,10 +2,6 @@ import 'package:car_api_final_app/models/catalogo_models.dart';
 import 'package:car_api_final_app/services/http_service.dart';
 import 'package:car_api_final_app/widgets/catalogo_list_item.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-// Importa tus modelos y servicios
-// import 'package:tu_app/models/vehiculo.dart';
-// import 'package:tu_app/services/vehiculo_service.dart';
 
 class CatalogoPublico extends StatefulWidget {
   const CatalogoPublico({super.key});
@@ -31,6 +27,8 @@ class _CatalogoPublicoState extends State<CatalogoPublico> {
         _filtro = value;
         _paginaActual = 1;
       });
+
+      FocusScope.of(context).unfocus();
     }
   }
 
@@ -41,6 +39,8 @@ class _CatalogoPublicoState extends State<CatalogoPublico> {
         _filtro = "";
         _paginaActual = 1;
       });
+
+      FocusScope.of(context).unfocus();
     }
   }
 

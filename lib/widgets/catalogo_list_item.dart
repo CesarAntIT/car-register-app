@@ -1,4 +1,5 @@
 import 'package:car_api_final_app/models/catalogo_models.dart';
+import 'package:car_api_final_app/pages/catalogo_publico_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -10,7 +11,12 @@ class CatalogoListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        // Aquí podrías navegar al detalle que creamos antes
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => DetalleCatalogo(vehiculoId: vehiculo.id),
+          ),
+        );
         print("Ver detalle de: ${vehiculo.id}");
       },
       child: Card(

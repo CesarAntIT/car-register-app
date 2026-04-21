@@ -138,10 +138,11 @@ class HttpService {
   }
 
   //[PETICIONES PARA EL CATALOGO DE VEHICULOS]
-  static Future<List<Catalogo>> listarCatalogo() async {
+  static Future<List<Catalogo>> listarCatalogo(String q, int page) async {
     try {
       final res = await _dio.get(
         '/publico/vehiculos',
+        queryParameters: {'page': '$page', 'q': q, 'limit': 20},
         options: Options(headers: {'Accept': 'application/json'}),
       );
       if (res.data['success'] == true) {

@@ -1,4 +1,5 @@
 import 'package:car_api_final_app/services/http_service.dart';
+import 'package:car_api_final_app/services/profile_service.dart';
 import 'package:car_api_final_app/widgets/foro_list_item.dart';
 import 'package:flutter/material.dart';
 
@@ -12,6 +13,7 @@ class ForoListaPage extends StatefulWidget {
 class _ForoListaPageState extends State<ForoListaPage> {
   List<dynamic> _temas = [];
   bool _loading = true;
+  bool _isLoggedIn = false;
 
   @override
   void initState() {
@@ -25,10 +27,19 @@ class _ForoListaPageState extends State<ForoListaPage> {
       final data = await HttpService.getListaTemasForo().timeout(
         const Duration(seconds: 10),
       );
-      setState(() {
-        _temas = data['data'] ?? [];
-        _loading = false;
-      });
+      final token = await HttpService.getToken();
+      if (await ProfileService.getProfile(token ?? "") != null) {
+        setState(() {
+          _temas = data['data'] ?? [];
+          _loading = false;
+          _isLoggedIn = true;
+        });
+      } else {
+        setState(() {
+          _temas = data['data'] ?? [];
+          _loading = false;
+        });
+      }
     } catch (e) {
       setState(() => _loading = false);
     }
@@ -41,11 +52,14 @@ class _ForoListaPageState extends State<ForoListaPage> {
         title: Text("Foro Comunitario", style: TextStyle(color: Colors.black)),
         backgroundColor: Colors.transparent,
         actions: [
-          IconButton(
-            icon: const Icon(Icons.bookmarks),
-            onPressed: () => Navigator.pushNamed(context, '/foro/mis-temas'),
-            tooltip: "Mis temas",
-          ),
+          _isLoggedIn
+              ? IconButton(
+                  icon: const Icon(Icons.bookmarks),
+                  onPressed: () =>
+                      Navigator.pushNamed(context, '/foro/mis-temas'),
+                  tooltip: "Mis temas",
+                )
+              : SizedBox(),
         ],
       ),
       body: _loading
@@ -63,20 +77,6 @@ class _ForoListaPageState extends State<ForoListaPage> {
                 },
               ),
             ),
-      // floatingActionButton: FloatingActionButton.extended(
-      //   backgroundColor: Colors.deepOrange,
-      //   foregroundColor: Colors.white,
-      //   onPressed: () async {
-      //     await Navigator.pushNamed(
-      //       context,
-      //       '/foro/crear',
-      //       arguments: 24, // vehiculoId — cuando haya login, pasar el real
-      //     );
-      //     _cargar();
-      //   },
-      //   icon: const Icon(Icons.add),
-      //   label: const Text("Nuevo Tema"),
-      // ),
     );
   }
 }

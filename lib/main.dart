@@ -60,8 +60,9 @@ class _MyAppState extends State<MyApp> {
           return GomasPage(vehiculoId: vehiculoId);
         },
         '/gomas/pinchazo': (context) {
-          final args = ModalRoute.of(context)!.settings.arguments
-              as Map<String, dynamic>;
+          final args =
+              ModalRoute.of(context)!.settings.arguments
+                  as Map<String, dynamic>;
           return GomaPinchazoRegistroPage(
             vehiculoId: args['vehiculoId'] as int,
             gomaId: args['gomaId'] as int,
@@ -111,12 +112,13 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  // TODO: Determine a definitive ColorScheme
+  // --- TU ESTILO LIGHT ---
   ThemeData lightThemeData() {
     return ThemeData(
+      useMaterial3: true,
       splashColor: Colors.deepOrange[200],
       iconButtonTheme: IconButtonThemeData(
-        style: ElevatedButton.styleFrom(backgroundColor: Colors.deepOrange),
+        style: IconButton.styleFrom(backgroundColor: Colors.deepOrange),
       ),
       splashFactory: InkRipple.splashFactory,
       appBarTheme: AppBarTheme(
@@ -135,7 +137,9 @@ class _MyAppState extends State<MyApp> {
       navigationDrawerTheme: NavigationDrawerThemeData(
         backgroundColor: Colors.white,
         indicatorColor: Colors.deepOrange,
-        indicatorShape: Border.all(style: BorderStyle.none),
+        indicatorShape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.zero,
+        ),
         tileHeight: 75,
         iconTheme: WidgetStateProperty.resolveWith((states) {
           return IconThemeData(
@@ -152,13 +156,35 @@ class _MyAppState extends State<MyApp> {
           );
         }),
       ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.deepOrange,
+          foregroundColor: Colors.white, // Color of the text and icons
+          textStyle: GoogleFonts.interTight(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          foregroundColor: Colors.deepOrange,
+          textStyle: GoogleFonts.interTight(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
     );
   }
 
+  // --- TU ESTILO DARK ---
   ThemeData darkThemeData() {
     return ThemeData(
+      useMaterial3: true,
+      brightness: Brightness.dark,
       iconButtonTheme: IconButtonThemeData(
-        style: ElevatedButton.styleFrom(
+        style: IconButton.styleFrom(
           backgroundColor: Colors.black,
           foregroundColor: Colors.deepOrange,
         ),
@@ -166,17 +192,17 @@ class _MyAppState extends State<MyApp> {
       textTheme: TextTheme(
         titleMedium: GoogleFonts.inter(
           color: Colors.white,
-          fontWeight: FontWeight(500),
+          fontWeight: FontWeight.w500,
         ),
         labelMedium: GoogleFonts.interTight(color: Colors.white, fontSize: 14),
-
         bodySmall: GoogleFonts.interTight(color: Colors.white),
       ),
-
       navigationDrawerTheme: NavigationDrawerThemeData(
         backgroundColor: Colors.black,
         indicatorColor: Colors.deepOrange,
-        indicatorShape: Border.all(style: BorderStyle.solid),
+        indicatorShape: const RoundedRectangleBorder(
+          side: BorderSide(color: Colors.deepOrange),
+        ),
         tileHeight: 75,
         iconTheme: WidgetStateProperty.resolveWith((states) {
           return IconThemeData(
@@ -193,8 +219,7 @@ class _MyAppState extends State<MyApp> {
           );
         }),
       ),
-
-      cardTheme: CardThemeData(
+      cardTheme: const CardThemeData(
         color: Colors.black,
         shadowColor: Colors.deepOrangeAccent,
         elevation: 4,
@@ -212,6 +237,28 @@ class _MyAppState extends State<MyApp> {
         backgroundColor: Colors.black,
         selectedItemColor: Colors.deepOrange,
         unselectedItemColor: Colors.white,
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.black,
+          foregroundColor: Colors.deepOrange, // Orange text on black background
+          side: const BorderSide(
+            color: Colors.deepOrange,
+          ), // Optional border for dark mode
+          textStyle: GoogleFonts.interTight(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          foregroundColor: Colors.white,
+          textStyle: GoogleFonts.interTight(
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
       ),
     );
   }

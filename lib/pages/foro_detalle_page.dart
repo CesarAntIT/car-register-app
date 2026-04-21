@@ -1,4 +1,5 @@
 import 'package:car_api_final_app/services/http_service.dart';
+import 'package:car_api_final_app/services/profile_service.dart';
 import 'package:car_api_final_app/widgets/foro_comment_item.dart';
 import 'package:flutter/material.dart';
 
@@ -15,6 +16,7 @@ class _ForoDetallePageState extends State<ForoDetallePage> {
   bool _loading = true;
   final _respuestaController = TextEditingController();
   bool _enviando = false;
+  bool _IsLoggedIn = false;
 
   @override
   void initState() {
@@ -28,10 +30,20 @@ class _ForoDetallePageState extends State<ForoDetallePage> {
       final data = await HttpService.getDetalleTema(
         widget.temaId,
       ).timeout(const Duration(seconds: 10));
-      setState(() {
-        _tema = data;
-        _loading = false;
-      });
+      final token = await HttpService.getToken();
+
+      if (await ProfileService.getProfile(token ?? "") != null) {
+        setState(() {
+          _tema = data;
+          _loading = false;
+          _IsLoggedIn = true;
+        });
+      } else {
+        setState(() {
+          _tema = data;
+          _loading = false;
+        });
+      }
     } catch (e) {
       setState(() => _loading = false);
     }
@@ -194,34 +206,36 @@ class _ForoDetallePageState extends State<ForoDetallePage> {
                       BoxShadow(color: Colors.black12, blurRadius: 4),
                     ],
                   ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          controller: _respuestaController,
-                          decoration: const InputDecoration(
-                            hintText: "Escribe tu respuesta...",
-                            border: OutlineInputBorder(),
-                            contentPadding: EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 8,
-                            ),
-                          ),
-                          maxLines: 2,
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      _enviando
-                          ? const CircularProgressIndicator()
-                          : IconButton(
-                              icon: const Icon(
-                                Icons.send,
-                                color: Colors.deepOrange,
+                  child: _IsLoggedIn
+                      ? Row(
+                          children: [
+                            Expanded(
+                              child: TextField(
+                                controller: _respuestaController,
+                                decoration: const InputDecoration(
+                                  hintText: "Escribe tu respuesta...",
+                                  border: OutlineInputBorder(),
+                                  contentPadding: EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 8,
+                                  ),
+                                ),
+                                maxLines: 2,
                               ),
-                              onPressed: _responder,
                             ),
-                    ],
-                  ),
+                            const SizedBox(width: 8),
+                            _enviando
+                                ? const CircularProgressIndicator()
+                                : IconButton(
+                                    icon: const Icon(
+                                      Icons.send,
+                                      color: Colors.deepOrange,
+                                    ),
+                                    onPressed: _responder,
+                                  ),
+                          ],
+                        )
+                      : SizedBox(),
                 ),
               ],
             ),

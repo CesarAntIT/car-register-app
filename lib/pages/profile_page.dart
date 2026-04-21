@@ -1,5 +1,6 @@
 import 'package:car_api_final_app/pages/login_page.dart';
 import 'package:car_api_final_app/services/http_service.dart';
+import 'package:car_api_final_app/widgets/change_password_dialog.dart';
 import 'package:flutter/material.dart';
 import '../services/profile_service.dart';
 
@@ -34,6 +35,15 @@ class _ProfilePageState extends State<ProfilePage> {
         (Route<dynamic> route) => false, // This condition deletes everything
       );
     }
+  }
+
+  void _showChangePassword(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible:
+          false, // Evita que se cierre al tocar fuera mientras carga
+      builder: (context) => const ChangePasswordDialog(),
+    );
   }
 
   @override
@@ -119,7 +129,12 @@ class _ProfilePageState extends State<ProfilePage> {
                 subtitle: Text(user["rol"] ?? "Usuario"),
               ),
             ),
-
+            const SizedBox(height: 25),
+            ElevatedButton.icon(
+              onPressed: () => _showChangePassword(context),
+              icon: Icon(Icons.password),
+              label: Text("Cambiar Contraseña"),
+            ),
             const SizedBox(height: 25),
             ElevatedButton.icon(
               onPressed: () => _logout(),

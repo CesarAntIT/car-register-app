@@ -2,6 +2,7 @@ import 'package:car_api_final_app/pages/login_page.dart';
 import 'package:car_api_final_app/services/http_service.dart';
 import 'package:car_api_final_app/widgets/change_password_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import '../services/profile_service.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -14,11 +15,58 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   Map<String, dynamic>? profile;
   late String token;
+  final ImagePicker _picker = ImagePicker();
 
   @override
   void initState() {
     super.initState();
     loadProfile();
+  }
+
+  void _mostrarOpcionesImagen() {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext bc) {
+        return SafeArea(
+          child: Wrap(
+            children: <Widget>[
+              ListTile(
+                leading: const Icon(Icons.photo_library),
+                title: const Text('Galería'),
+                onTap: () async {
+                  Navigator.of(context).pop();
+                  final XFile? image = await _picker.pickImage(
+                    source: ImageSource.gallery,
+                  );
+                  if (image != null) {
+                    await ProfileService.actualizarFotoPerfil(image.path);
+                    if (mounted) {
+                      Navigator.pop(context);
+                    }
+                  }
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.photo_camera),
+                title: const Text('Cámara'),
+                onTap: () async {
+                  Navigator.of(context).pop();
+                  final XFile? image = await _picker.pickImage(
+                    source: ImageSource.camera,
+                  );
+                  if (image != null) {
+                    await ProfileService.actualizarFotoPerfil(image.path);
+                    if (mounted) {
+                      Navigator.pop(context);
+                    }
+                  }
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   void loadProfile() async {
@@ -81,17 +129,28 @@ class _ProfilePageState extends State<ProfilePage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             // FOTO
-            CircleAvatar(
-              radius: 50,
-              backgroundImage:
-                  user["fotoUrl"] != null &&
-                      user["fotoUrl"].toString().isNotEmpty
-                  ? NetworkImage(user["fotoUrl"])
-                  : null,
-              child:
-                  user["fotoUrl"] == null || user["fotoUrl"].toString().isEmpty
-                  ? const Icon(Icons.person, size: 50)
-                  : null,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                SizedBox(width: 50),
+                CircleAvatar(
+                  radius: 50,
+                  backgroundImage:
+                      user["fotoUrl"] != null &&
+                          user["fotoUrl"].toString().isNotEmpty
+                      ? NetworkImage(user["fotoUrl"])
+                      : null,
+                  child:
+                      user["fotoUrl"] == null ||
+                          user["fotoUrl"].toString().isEmpty
+                      ? const Icon(Icons.person, size: 50)
+                      : null,
+                ),
+                IconButton(
+                  onPressed: () => _mostrarOpcionesImagen(),
+                  icon: Icon(Icons.edit),
+                ),
+              ],
             ),
             const SizedBox(height: 15),
             // NOMBRE

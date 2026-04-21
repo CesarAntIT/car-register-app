@@ -1,4 +1,7 @@
 import 'package:car_api_final_app/models/vehiculo_model.dart';
+import 'package:car_api_final_app/pages/login_page.dart';
+import 'package:car_api_final_app/services/http_service.dart';
+import 'package:car_api_final_app/services/profile_service.dart';
 import 'package:car_api_final_app/widgets/vehicle_list_item.dart';
 import 'package:flutter/material.dart';
 import '../services/vehiculo_service.dart';
@@ -15,6 +18,7 @@ class CatalogoVehiculosScreen extends StatefulWidget {
 class _CatalogoVehiculosScreenState extends State<CatalogoVehiculosScreen> {
   final VehiculoService service = VehiculoService();
   late Future<List<Vehiculo>> _futureVehiculos;
+  bool _isLoggedIn = false;
 
   @override
   void initState() {
@@ -23,9 +27,15 @@ class _CatalogoVehiculosScreenState extends State<CatalogoVehiculosScreen> {
   }
 
   Future<void> _cargarVehiculos() async {
-    setState(() {
-      _futureVehiculos = service.getVehiculos();
-    });
+    final token = await HttpService.getToken();
+    if (await ProfileService.getProfile(token ?? "") != null) {
+      if(mounted) {
+        setState(() {
+        _futureVehiculos = service.getVehiculos();
+        _isLoggedIn = true;
+       });
+      }
+    }
   }
 
   Future _navegarYAnadir(BuildContext context, [Vehiculo? vehiculo]) async {
@@ -52,41 +62,64 @@ class _CatalogoVehiculosScreenState extends State<CatalogoVehiculosScreen> {
             style: Theme.of(context).appBarTheme.titleTextStyle,
           ),
           Divider(),
-          Expanded(
-            child: RefreshIndicator(
-              onRefresh: _cargarVehiculos,
-              child: FutureBuilder<List<Vehiculo>>(
-                future: _futureVehiculos,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                  if (snapshot.hasError) {
-                    return const Center(child: Text("Error al cargar datos"));
-                  }
+          _isLoggedIn
+              ? Expanded(
+                  child: RefreshIndicator(
+                    onRefresh: _cargarVehiculos,
+                    child: FutureBuilder<List<Vehiculo>>(
+                      future: _futureVehiculos,
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                        if (snapshot.hasError) {
+                          return const Center(
+                            child: Text("Error al cargar datos"),
+                          );
+                        }
 
-                  final vehiculos = snapshot.data ?? [];
+                        final vehiculos = snapshot.data ?? [];
 
-                  if (vehiculos.isEmpty) {
-                    return Expanded(
-                      child: const Center(
-                        child: Text("No hay vehículos registrados"),
+                        if (vehiculos.isEmpty) {
+                          return Expanded(
+                            child: const Center(
+                              child: Text("No hay vehículos registrados"),
+                            ),
+                          );
+                        }
+
+                        return ListView.builder(
+                          padding: const EdgeInsets.all(8.0),
+                          itemCount: vehiculos.length,
+                          itemBuilder: (context, index) {
+                            final v = vehiculos[index];
+                            return VehicleListItem(v: v);
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                )
+              : Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(),
+                      SizedBox(height: 50),
+                      Text("No aparece tu perfil?"),
+                      TextButton(
+                        onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => LoginPage()),
+                        ),
+                        child: Text("Inicia Sesión !!"),
                       ),
-                    );
-                  }
-
-                  return ListView.builder(
-                    padding: const EdgeInsets.all(8.0),
-                    itemCount: vehiculos.length,
-                    itemBuilder: (context, index) {
-                      final v = vehiculos[index];
-                      return VehicleListItem(v: v);
-                    },
-                  );
-                },
-              ),
-            ),
-          ),
+                    ],
+                  ),
+                ),
         ],
       ),
       floatingActionButton: Column(

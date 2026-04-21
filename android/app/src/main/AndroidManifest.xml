@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
-        android:label="car_api_final_app"
+        android:label="AutoZone-ITLA"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity
